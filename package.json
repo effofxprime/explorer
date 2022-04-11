@@ -100,5 +100,6 @@
     "sass-loader": "^10.1.0",
     "vue-template-compiler": "2.x",
     "webpack-bundle-analyzer": "^4.5.0"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
