@@ -1,5 +1,8 @@
 <template>
   <div>
+    <b-card-title class="d-non d-sm-block">
+      <span>Donation Addresses. Testnet Addresses begin with 't'</span>
+    </b-card-title>
     <b-row>
       <b-col
         v-for="(item, i) in chains"
@@ -49,12 +52,12 @@ export default {
   },
   data() {
     return {
-      selectedAddress: 'cosmos1ev0vtddkl7jlwfawlk06yzncapw2x9quyxx75u',
+      selectedAddress: 'cosmos1mv8zeqes72e7cjd8nzp5gzy5zkqr4rnhd8enn7',
     }
   },
   computed: {
     chains() {
-      const { data } = addressDecode('cosmos1ev0vtddkl7jlwfawlk06yzncapw2x9quyxx75u')
+      const { data } = addressDecode('cosmos1mv8zeqes72e7cjd8nzp5gzy5zkqr4rnhd8enn7')
       const config = Object.values(JSON.parse(localStorage.getItem('chains')))
         .map(x => ({
           addr: addressEnCode(x.addr_prefix, data),

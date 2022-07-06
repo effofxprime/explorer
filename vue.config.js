@@ -71,4 +71,31 @@ module.exports = {
       },
     },
   },
+//configureWebpack: {
+//        performance: {
+//            //hints: "warning", // enum
+//            maxAssetSize: 1048576, // int (in bytes),
+//            maxEntrypointSize: 1048576, // int (in bytes)
+//        },
+//        //optimization: {
+//          //    splitChunks: {
+//                //chunks: "all"
+//            //      minSize: 81380,
+//              //    maxSize: 122880,
+//             // }
+//           // }
+//   // }
+//    },
+  chainWebpack: config => {
+    config.performance
+        .maxEntrypointSize(10240000)
+        .maxAssetSize(10240000)
+    config.optimization.minimize(true);
+    config.optimization.splitChunks({
+        chunks: 'all',
+        minSize: 81390,
+        maxSize: 122880,
+        });
+ },
+
 }

@@ -1,0 +1,19 @@
+{
+    "chain_name": "bitcanna",
+    "coingecko": "bitcanna", 
+    "api":"https://lcd-testnet.bitcanna.io", 
+    "rpc": ["https://rpc-testnet.bitcanna.io:443","https://rpc-testnet.bitcanna.io:443"],
+    "snapshot_provider": "8819448022bacae75acb5998c34ef97c25b5bcec@rpc-testnet.bitcanna.io:26656",
+    "sdk_version": "0.44.2",
+    "coin_type": "118",
+    "min_tx_fee": "8000",
+    "assets": [{
+        "base": "ubcna",
+        "symbol": "BCNA",
+        "exponent": "6",
+        "coingecko_id": "bitcanna", 
+        "logo": "/logos/bitcanna.svg"
+    }],
+    "addr_prefix": "bcna",
+    "logo": "/logos/bitcanna.svg"
+}

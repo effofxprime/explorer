@@ -1,0 +1,19 @@
+{
+    "chain_name": "testnet-vidulum",
+    "coingecko": "vidulum",
+    "api": ["https://testnet-lcd.vidulum.app"],
+    "rpc": [],
+    "snapshot_provider": "",
+    "sdk_version": "0.44.0",
+    "coin_type": "370",
+    "min_tx_fee": "8000",
+    "addr_prefix": "tvdl",
+    "logo": "/logos/VDL.png",
+    "assets": [{
+        "base": "utvdl",
+        "symbol": "TVDL",
+        "exponent": "6",
+        "coingecko_id": "vidulum",
+        "logo": "/logos/VDL.png"
+    }]
+  }

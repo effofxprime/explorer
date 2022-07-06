@@ -34,8 +34,8 @@ const router = new VueRouter({
         pageTitle: 'Donation',
         breadcrumb: [
           {
-            text: 'Buy me a cup of coffee!',
-            active: false,
+            text: 'Donate for my lost UST',
+            active: true,
           },
         ],
       },

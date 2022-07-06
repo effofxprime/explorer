@@ -1,0 +1,19 @@
+{
+    "chain_name": "crescent",
+    "coingecko": "crescent-network",
+    "api": ["https://crescent-api.polkachu.com"],
+    "rpc": [],
+    "snapshot_provider": "",
+    "sdk_version": "0.44.5",
+    "coin_type": "118",
+    "min_tx_fee": "8000",
+    "addr_prefix": "cre",
+    "logo": "https://ping.pub/logos/cre.png",
+    "assets": [{
+        "base": "ucre",
+        "symbol": "CRE",
+        "exponent": "6",
+        "coingecko_id": "crescent-network",
+        "logo": "https://ping.pub/logos/cre.png"
+    }]
+  }

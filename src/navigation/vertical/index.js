@@ -33,16 +33,16 @@ const modules = [
     title: 'statesync',
     route: 'statesync',
   },
-  {
-    scope: 'cos-mos',
-    title: 'gravity',
-    route: 'gravity',
-  },
-  {
-    scope: 'osmosis',
-    title: 'trade',
-    route: 'osmosis-trade',
-  },
+//  {
+//    scope: 'cos-mos',
+//    title: 'gravity',
+//    route: 'gravity',
+//  },
+//  {
+//    scope: 'osmosis',
+//    title: 'trade',
+//    route: 'osmosis-trade',
+//  },
 ]
 
 function processMenu() {
@@ -72,36 +72,69 @@ function processMenu() {
     menu.children = children
     chainMenus.push(menu)
   })
-  chainMenus.push({ header: 'LINKS' })
+  chainMenus.push({ header: 'DONATE' })
+  chainMenus.push({
+    title: 'Donation Addresses',
+    href: 'https://explorer.erialos.me/coffee',
+    icon: 'DollarSignIcon',
+  })
+  chainMenus.push({ header: 'Explorer' })
   if (isTestnet()) {
     chainMenus.push({
       title: 'Mainnet Explorer',
-      href: 'https://ping.pub',
+      href: 'https://explorer.erialos.me',
       icon: 'ChromeIcon',
     })
   } else {
     chainMenus.push({
       title: 'Testnet Explorer',
-      href: 'http://testnet.ping.pub',
-      icon: 'LifeBuoyIcon',
+      href: 'https://testnet.explorer.erialos.me',
+      icon: 'ChromeIcon',
     })
   }
+  chainMenus.push({ header: 'LINKS' })
   chainMenus.push({
-    title: 'Discord',
-    href: 'https://discord.gg/CmjYVSr6GW',
-    icon: 'EyeIcon',
+    title: 'Erialos.me',
+    href: 'https://erialos.me',
+    icon: 'ChromeIcon',
   })
   chainMenus.push({
-    title: 'Twitter',
-    href: 'https://twitter.com/ping_pub',
+    title: 'Erialos - Twitter',
+    href: 'https://twitter.com/ErialosOfAstora',
     icon: 'TwitterIcon',
   })
   chainMenus.push({
-    title: 'Github',
-    href: 'https://github.com/ping-pub/explorer',
+    title: 'Erialos - Github Projects',
+    href: 'https://github.com/effofxprime',
     icon: 'GithubIcon',
   })
-
+  chainMenus.push({ header: 'DISCORD CHATS' })
+  chainMenus.push({
+    title: 'Vidulum',
+    href: 'https://discord.gg/EuYCCSFUFR',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({
+    title: 'Beezee',
+    href: 'https://discord.gg/yd4SGwRTHP',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({
+    title: 'PaceValiArmy',
+    href: 'https://discord.gg/XdZMvUFXjF',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({
+    title: 'BTC Princess',
+    href: 'https://discord.gg/VfDWX4Pw3a',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({ header: 'POW MINING SERVERS' })
+  chainMenus.push({
+    title: 'Crypto 2Mars',
+    href: 'https://discord.com/invite/2mars',
+    icon: 'EyeIcon',
+  })
   return chainMenus
 }
 
