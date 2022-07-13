@@ -121,7 +121,7 @@ function processMenu() {
   })
   chainMenus.push({
     title: 'PaceValiArmy',
-    href: 'https://discord.gg/XdZMvUFXjF',
+    href: 'https://discord.gg/X47AATjQFy',
     icon: 'EyeIcon',
   })
   chainMenus.push({
