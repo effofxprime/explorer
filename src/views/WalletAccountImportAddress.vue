@@ -1,5 +1,17 @@
 <template>
   <div>
+    <b-alert
+      variant="danger"
+      :show="true"
+      dismissible
+    >
+      <h4 class="alert-heading">
+        DISCLAIMER:
+      </h4>
+      <div class="alert-body">
+        <span>Ping.pub is maintained by the community, Everyone could add a chain to ping.pub. Some of those blockchains are not fully tested, Use at your own risk.</span>
+      </div>
+    </b-alert>
     <form-wizard
       ref="wizard"
       color="#7367F0"
@@ -60,6 +72,14 @@
                       class="mb-1"
                     >
                       Ledger via Bluetooth
+                    </b-form-radio>
+                    <b-form-radio
+                      v-model="device"
+                      name="device"
+                      value="metamask"
+                      class="mb-1 d-none"
+                    >
+                      Metamask
                     </b-form-radio>
                     <b-form-radio
                       v-model="device"
@@ -273,14 +293,31 @@
     </form-wizard>
 
     <b-alert
-      variant="danger"
-      :show="true"
+      variant="secondary"
+      :show="!accounts && device === 'keplr'"
     >
       <h4 class="alert-heading">
-        DISCLAIMER:
+        Enable Keplr For {{ chainId }}
       </h4>
-      <div class="alert-body">
-        <span>Ping.pub is maintained by the community, Everyone could add a chain to ping.pub. Some of those blockchains are not fully tested, Use at your own risk.</span>
+      <div class="alert-body p-1">
+        <span>If Keplr has not added <code>{{ chainId }}</code>, We can enable it here.</span>
+        <b-form-textarea
+          :value="keplr"
+          rows="10"
+          class="mt-1 mb-1"
+        />
+        <div
+          v-if="error"
+          class="text-danger"
+        >
+          {{ error }}
+        </div>
+        <b-button
+          variant="primary"
+          @click="suggest()"
+        >
+          Enable Keplr
+        </b-button>
       </div>
     </b-alert>
   </div>
@@ -292,6 +329,7 @@ import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 // import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import MetaMaskSigner from '@/libs/client/MetaMaskSigner'
 import {
   BAlert,
   BRow,
@@ -305,17 +343,20 @@ import {
   BInputGroupPrepend,
   BFormRadioGroup,
   VBTooltip,
+  BFormTextarea,
+  BButton,
 } from 'bootstrap-vue'
 import { required } from '@validations'
-import store from '@/store'
 import {
   addressDecode, addressEnCode, getLedgerAddress, getLocalAccounts,
 } from '@/libs/utils'
 import { toHex } from '@cosmjs/encoding'
+import { stringToPath } from '@cosmjs/crypto'
 
 export default {
   components: {
     BAlert,
+    BButton,
     ValidationProvider,
     ValidationObserver,
     FormWizard,
@@ -327,6 +368,7 @@ export default {
     BFormInput,
     BFormRadio,
     BFormCheckbox,
+    BFormTextarea,
     BInputGroup,
     BInputGroupPrepend,
     BFormRadioGroup,
@@ -349,11 +391,15 @@ export default {
       accounts: null,
       exludes: [], // HD Path is NOT supported,
       edit: false,
+      keplr: '',
+      chainId: '',
+      error: null,
     }
   },
   computed: {
     chains() {
       const config = JSON.parse(localStorage.getItem('chains'))
+
       this.exludes.forEach(x => {
         delete config[x]
       })
@@ -364,8 +410,8 @@ export default {
         const { data } = addressDecode(this.accounts.address)
         return this.selected.map(x => {
           if (this.chains[x]) {
-            const { logo, addr_prefix } = this.chains[x]
-            const addr = addressEnCode(addr_prefix, data)
+            const { logo, addr_prefix, coin_type } = this.chains[x]
+            const addr = addressEnCode(addr_prefix, data, coin_type)
             return {
               chain: x, addr, logo, hdpath: this.hdpath,
             }
@@ -377,7 +423,12 @@ export default {
     },
   },
   mounted() {
-    const { selected } = store.state.chains
+    const { selected } = this.$store.state.chains
+    // this.chain = selected
+    this.$http.getLatestBlock().then(res => {
+      this.chainId = res.block.header.chain_id
+      this.keplr = this.initParamsForKeplr(this.chainId, selected)
+    })
     if (selected && selected.chain_name && !this.exludes.includes(selected.chain_name)) {
       this.selected.push(selected.chain_name)
     }
@@ -405,6 +456,61 @@ export default {
     }
   },
   methods: {
+    suggest() {
+      if (window.keplr) {
+        window.keplr.experimentalSuggestChain(JSON.parse(this.keplr)).catch(e => {
+          this.error = e
+        })
+      }
+    },
+    initParamsForKeplr(chainid, chain) {
+      return JSON.stringify({
+        chainId: chainid,
+        chainName: chain.chain_name,
+        rpc: Array.isArray(chain.rpc) ? chain.rpc[0] : chain.rpc,
+        rest: Array.isArray(chain.api) ? chain.api[0] : chain.api,
+        bip44: {
+          coinType: chain.coin_type,
+        },
+        coinType: chain.coin_type,
+        bech32Config: {
+          bech32PrefixAccAddr: chain.addr_prefix,
+          bech32PrefixAccPub: `${chain.addr_prefix}pub`,
+          bech32PrefixValAddr: `${chain.addr_prefix}valoper`,
+          bech32PrefixValPub: `${chain.addr_prefix}valoperpub`,
+          bech32PrefixConsAddr: `${chain.addr_prefix}valcons`,
+          bech32PrefixConsPub: `${chain.addr_prefix}valconspub`,
+        },
+        currencies: [
+          {
+            coinDenom: chain.assets[0].symbol,
+            coinMinimalDenom: chain.assets[0].base,
+            coinDecimals: chain.assets[0].exponent,
+            coinGeckoId: chain.assets[0].coingecko_id || 'unknown',
+          },
+        ],
+        feeCurrencies: [
+          {
+            coinDenom: chain.assets[0].symbol,
+            coinMinimalDenom: chain.assets[0].base,
+            coinDecimals: chain.assets[0].exponent,
+            coinGeckoId: chain.assets[0].coingecko_id || 'unknown',
+          },
+        ],
+        stakeCurrency: {
+          coinDenom: chain.assets[0].symbol,
+          coinMinimalDenom: chain.assets[0].base,
+          coinDecimals: chain.assets[0].exponent,
+          coinGeckoId: chain.assets[0].coingecko_id || 'unknown',
+        },
+        gasPriceStep: {
+          low: 0.01,
+          average: 0.025,
+          high: 0.03,
+        },
+        features: chain.keplr_features || [],
+      }, null, '\t')
+    },
     formatPubkey(v) {
       if (typeof (v) === 'string') {
         return v
@@ -428,6 +534,14 @@ export default {
       await window.keplr.enable(chainId)
       const offlineSigner = window.getOfflineSigner(chainId)
       return offlineSigner.getAccounts()
+    },
+    async connectMetamask() {
+      if (!window.ethereum) {
+        this.debug = 'Please install Metamask extension'
+        return null
+      }
+      const signer = MetaMaskSigner.create(stringToPath(this.hdpath))
+      return signer.getAccounts()
     },
     localAddress() {
       if (!this.address) return false
@@ -480,6 +594,17 @@ export default {
                 this.accounts = accounts[0]
                 ok = true
               }
+            })
+            break
+          case 'metamask':
+            await this.connectMetamask().then(accounts => {
+              if (accounts) {
+              // eslint-disable-next-line prefer-destructuring
+                this.accounts = accounts[0]
+                ok = true
+              }
+            }).catch(e => {
+              this.debug = e
             })
             break
           case 'ledger':

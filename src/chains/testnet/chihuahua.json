@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "chain_name": "chihuahua",
     "coingecko": "",
     "api": ["https://chihuahua-testnet-api.polkachu.com"],
@@ -16,4 +17,24 @@
         "coingecko_id": "", 
         "logo": "/logos/chihuahua.png"
     }]
+=======
+  "chain_name": "chihuahua",
+  "coingecko": "",
+  "api": ["https://chihuahua-testnet-api.polkachu.com"],
+  "rpc": ["https://chihuahua-testnet-rpc.polkachu.com"],
+  "sdk_version": "0.44.3",
+  "coin_type": "118",
+  "min_tx_fee": "8000",
+  "addr_prefix": "chihuahua",
+  "logo": "/logos/chihuahua.png",
+  "assets": [
+    {
+      "base": "uhuahua",
+      "symbol": "HUAHUA",
+      "exponent": "6",
+      "coingecko_id": "",
+      "logo": "/logos/chihuahua.png"
+    }
+  ]
+>>>>>>> master
 }

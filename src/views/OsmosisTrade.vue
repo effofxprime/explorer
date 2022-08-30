@@ -118,7 +118,6 @@ import { formatTokenDenom } from '@/libs/utils'
 import FeatherIcon from '@/@core/components/feather-icon/FeatherIcon.vue'
 import Place from './components/KlineTrade/Place.vue'
 // import Kline from './components/kline/index.vue'
-import SummaryPriceChart from './SummaryPriceChart.vue'
 
 export default {
   components: {
@@ -130,8 +129,13 @@ export default {
     BSpinner,
     Place,
     BCard,
-    SummaryPriceChart,
     FeatherIcon,
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { poolid } = to.params
+    this.init(poolid)
+    next()
+    // }
   },
   data() {
     return {
@@ -205,12 +209,6 @@ export default {
         this.init(poolid)
       })
     })
-  },
-  beforeRouteUpdate(to, from, next) {
-    const { poolid } = to.params
-    this.init(poolid)
-    next()
-    // }
   },
   methods: {
     getPrice(symbol) {

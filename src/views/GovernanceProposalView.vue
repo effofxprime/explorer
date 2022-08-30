@@ -77,21 +77,14 @@
                 {{ $t('voting_time') }}
               </b-td><b-td>{{ formatDate(proposal.voting_start_time) }} - {{ formatDate(proposal.voting_end_time) }}</b-td>
             </b-tr>
-            <b-tr>
-              <b-td>
-                {{ $t('proposal_type') }}
-              </b-td><b-td>
-                {{ proposal.type }}
-              </b-td>
-            </b-tr>
           </tbody>
         </b-table-simple>
-        <div style="white-space: pre-line">
+        <div>
           <object-field-component
             :tablefield="proposal.contents"
             :small="false"
           /></div>
-        <b-table-simple v-if="proposal.type === 'cosmos-sdk/SoftwareUpgradeProposal'">
+        <b-table-simple v-if="proposal.type.indexOf('SoftwareUpgrade') > 0">
           <b-tr>
             <b-td class="text-center">
               {{ $t('upgrade_time') }} {{ upgradeTime }}
@@ -101,7 +94,7 @@
         </b-table-simple>
       </b-card-body>
       <b-card-footer>
-        <router-link :to="`../gov`">
+        <router-link :to="from">
           <b-button
             variant="outline-primary"
           >
@@ -204,7 +197,10 @@
         </div>
       </b-card-body>
     </b-card>
-    <b-card no-body>
+    <b-card
+      v-if="proposal.total_deposit"
+      no-body
+    >
       <b-card-header>
         <b-card-title>
           Deposits ({{ formatToken(proposal.total_deposit) }})
@@ -212,8 +208,9 @@
       </b-card-header>
       <b-card-body>
         <b-table
+          v-if="Array.isArray(deposits.deposits || deposits)"
           stacked="sm"
-          :items="deposits.deposits?deposits.deposits:deposits"
+          :items="deposits.deposits || deposits"
           :fields="deposit_fields"
           striped
         >
@@ -225,7 +222,7 @@
         </b-table>
       </b-card-body>
       <b-card-footer>
-        <router-link :to="`../gov`">
+        <router-link :to="from">
           <b-button
             variant="outline-primary"
           >
@@ -274,7 +271,7 @@ import {
 import { Proposal, Proposer } from '@/libs/data'
 import dayjs from 'dayjs'
 import OperationModal from '@/views/components/OperationModal/index.vue'
-import ObjectFieldComponent from './ObjectFieldComponent.vue'
+import ObjectFieldComponent from './components/ObjectFieldComponent.vue'
 
 // import { formatToken } from '@/libs/data/data'
 
@@ -307,6 +304,7 @@ export default {
       deposits: [],
       votes: [],
       operationModalType: '',
+      from: '../gov',
       votes_fields: [
         {
           key: 'voter',
@@ -351,7 +349,7 @@ export default {
   },
   computed: {
     upgradeTime() {
-      if (this.proposal.type === 'cosmos-sdk/SoftwareUpgradeProposal') {
+      if (this.proposal.type.indexOf('SoftwareUpgrade') > 0) {
         if (Number(this.proposal?.contents.plan.height || 0) > 0 && this.latest?.block) {
           const blocks = Number(this.proposal.contents.plan.height) - Number(this.latest.block?.header?.height || 0)
           if (blocks > 0) {
@@ -366,6 +364,9 @@ export default {
   },
   created() {
     const pid = this.$route.params.proposalid
+    if (this.$route.query.from) {
+      this.from = this.$route.query.from
+    }
 
     this.$http.getLatestBlock().then(res => {
       this.latest = res
@@ -387,7 +388,7 @@ export default {
     })
     this.$http.getGovernanceDeposits(pid).then(res => {
       this.deposits = res
-    })
+    }).catch(() => {})
     this.$http.getGovernanceVotes(pid).then(res => {
       this.votes = res
       this.next = res.pagination ? res.pagination.next_key : null

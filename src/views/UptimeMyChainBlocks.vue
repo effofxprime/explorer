@@ -83,7 +83,7 @@ import {
 import {
   getLocalChains, timeIn, toDay,
 } from '@/libs/utils'
-import { Bech32, toHex } from '@cosmjs/encoding'
+import { fromBech32, toBase64 } from '@cosmjs/encoding'
 
 export default {
   name: 'Blocks',
@@ -134,8 +134,8 @@ export default {
       if (res.info) {
         res.info.forEach(x => {
           if (x.address) {
-            const hex = toHex(Bech32.decode(x.address).data).toUpperCase()
-            this.missing[hex] = x
+            const addr = toBase64(fromBech32(x.address).data)
+            this.missing[addr] = x
           }
         })
       }
@@ -209,7 +209,7 @@ export default {
           if (x.validator_address) sigs[x.validator_address] = 'bg-success'
         })
         this.height = res.block.last_commit.height
-        const block = this.blocks.find(b => b[1] === res.block.last_commit.height)
+        const block = this.blocks.find(b => b.height === res.block.last_commit.height)
         if (typeof block === 'undefined') { // mei
           // this.$set(block, 0, typeof sigs !== 'undefined')
           if (this.blocks.length >= 50) this.blocks.shift()

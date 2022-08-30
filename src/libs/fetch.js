@@ -39,7 +39,7 @@ export default class ChainFetch {
     let chain = store.state.chains.selected
     const lschains = localStorage.getItem('chains')
     if (lschains) {
-      chain = JSON.parse(lschains)[chain.chain_name]
+      chain = JSON.parse(lschains)[chain?.chain_name || 'cosmos']
     }
     if (!chain.sdk_version) {
       chain.sdk_version = '0.33'
@@ -55,20 +55,24 @@ export default class ChainFetch {
     return true
   }
 
+  async getNodeInfo() {
+    return this.get('/cosmos/base/tendermint/v1beta1/node_info')
+  }
+
   async getLatestBlock(config = null) {
-    const conf = config || this.getSelectedConfig()
-    if (conf.chain_name === 'injective') {
-      return ChainFetch.fetch('https://tm.injective.network', '/block').then(data => Block.create(commonProcess(data)))
-    }
-    return this.get(`/blocks/latest?${new Date().getTime()}`, config).then(data => Block.create(data))
+    // const conf = config || this.getSelectedConfig()
+    // if (conf.chain_name === 'injective') {
+    //   return ChainFetch.fetch('https://tm.injective.network', '/cosmos/base/tendermint/v1beta1/block').then(data => Block.create(commonProcess(data)))
+    // }
+    return this.get('/cosmos/base/tendermint/v1beta1/blocks/latest', config).then(data => Block.create(data))
   }
 
   async getBlockByHeight(height, config = null) {
-    const conf = config || this.getSelectedConfig()
-    if (conf.chain_name === 'injective') {
-      return ChainFetch.fetch('https://tm.injective.network', `/block?height=${height}`).then(data => Block.create(commonProcess(data)))
-    }
-    return this.get(`/blocks/${height}`, config).then(data => Block.create(data))
+    // const conf = config || this.getSelectedConfig()
+    // if (conf.chain_name === 'injective') {
+    //   return ChainFetch.fetch('https://tm.injective.network', `/cosmos/base/tendermint/v1beta1/block?height=${height}`).then(data => Block.create(commonProcess(data)))
+    // }
+    return this.get(`/cosmos/base/tendermint/v1beta1/blocks/${height}`, config).then(data => Block.create(data))
   }
 
   async getSlashingSigningInfo(config = null) {
@@ -85,35 +89,50 @@ export default class ChainFetch {
     return this.get(`/cosmos/tx/v1beta1/txs/${hash}`).then(data => WrapStdTx.create(data, ver))
   }
 
-  async getTxsBySender(sender, page = 1) {
-    return this.get(`/txs?message.sender=${sender}&page=${page}&limit=20`)
+  async getTxsBySender(sender) {
+    return this.get(`/cosmos/tx/v1beta1/txs?events=message.sender='${sender}'&pagination.reverse=true&order_by=ORDER_BY_DESC`)
   }
 
   async getTxsByRecipient(recipient) {
-    return this.get(`/txs?message.recipient=${recipient}`)
+    return this.get(`/cosmos/tx/v1beta1/txs?message.recipient=${recipient}`)
   }
 
   async getTxsByHeight(height) {
-    return this.get(`/txs?tx.height=${height}`)
+    return this.get(`/cosmos/tx/v1beta1/txs?events=tx.height=${height}`)
   }
 
   async getValidatorDistribution(address) {
     return this.get(`/distribution/validators/${address}`).then(data => {
-      const ret = ValidatorDistribution.create(commonProcess(data))
-      ret.versionFixed(this.config.sdk_version)
+      const value = commonProcess(data)
+      const ret = ValidatorDistribution.create({
+        operator_address: address,
+        self_bond_rewards: value.self_bond_rewards,
+        val_commission: value.val_commission.commission,
+      })
       return ret
     })
+    // return Promise.all([
+    //   this.get(`/cosmos/distribution/v1beta1/validators/${address}/commission`),
+    //   this.get(`/cosmos/distribution/v1beta1/validators/${address}/outstanding_rewards`),
+    // ]).then(data => {
+    //   const ret = ValidatorDistribution.create({
+    //     operator_address: address,
+    //     self_bond_rewards: data[1].rewards.rewards,
+    //     val_commission: data[0].commission.commission,
+    //   })
+    //   return ret
+    // })
   }
 
   async getStakingDelegatorDelegation(delegatorAddr, validatorAddr) {
-    return this.get(`/staking/delegators/${delegatorAddr}/delegations/${validatorAddr}`).then(data => StakingDelegation.create(commonProcess(data)))
+    return this.get(`/cosmos/staking/v1beta1/validators/${validatorAddr}/delegations/${delegatorAddr}`).then(data => StakingDelegation.create(commonProcess(data).delegation_response))
   }
 
   async getBankTotal(denom) {
     if (compareVersions(this.config.sdk_version, '0.40') < 0) {
       return this.get(`/supply/total/${denom}`).then(data => ({ amount: commonProcess(data), denom }))
     }
-    return this.get(`/bank/total/${denom}`).then(data => commonProcess(data))
+    return this.get(`/cosmos/bank/v1beta1/supply/${denom}`).then(data => commonProcess(data).amount)
   }
 
   async getBankTotals() {
@@ -124,34 +143,40 @@ export default class ChainFetch {
   }
 
   async getStakingPool() {
-    return this.get('/staking/pool').then(data => new StakingPool().init(commonProcess(data)))
+    return this.get('/cosmos/staking/v1beta1/pool').then(data => new StakingPool().init(commonProcess(data.pool)))
   }
 
   async getMintingInflation() {
-    if (this.isModuleLoaded('minting')) {
-      return this.get('/minting/inflation').then(data => Number(commonProcess(data)))
+    if (this.config.chain_name === 'evmos') {
+      return this.get('/evmos/inflation/v1/inflation_rate').then(data => Number(data.inflation_rate / 100 || 0))
     }
-    return null
+    if (this.config.chain_name === 'echelon') {
+      return this.get('/echelon/inflation/v1/inflation_rate').then(data => Number(data.inflation_rate / 100 || 0))
+    }
+    if (this.isModuleLoaded('minting')) {
+      return this.get('/cosmos/mint/v1beta1/inflation').then(data => Number(commonProcess(data.inflation)))
+    }
+    return 0
   }
 
   async getStakingParameters() {
-    return this.get('/staking/parameters').then(data => {
+    return this.get('/cosmos/staking/v1beta1/params').then(data => {
       this.getSelectedConfig()
-      return StakingParameters.create(commonProcess(data), this.config.chain_name)
+      return StakingParameters.create(commonProcess(data.params), this.config.chain_name)
     })
   }
 
   async getValidatorList(config = null) {
-    return this.get('/staking/validators', config).then(data => {
-      const vals = commonProcess(data).map(i => new Validator().init(i))
+    return this.get('/cosmos/staking/v1beta1/validators?pagination.limit=200&status=BOND_STATUS_BONDED', config).then(data => {
+      const vals = commonProcess(data.validators).map(i => new Validator().init(i))
       localStorage.setItem(`validators-${this.config.chain_name}`, JSON.stringify(vals))
       return vals
     })
   }
 
   async getValidatorUnbondedList() {
-    return this.get('/cosmos/staking/v1beta1/validators?status=BOND_STATUS_UNBONDED').then(data => {
-      const result = commonProcess(data)
+    return this.get('/cosmos/staking/v1beta1/validators?pagination.limit&status=BOND_STATUS_UNBONDED').then(data => {
+      const result = commonProcess(data.validators)
       const vals = result.validators ? result.validators : result
       return vals.map(i => new Validator().init(i))
     })
@@ -170,46 +195,82 @@ export default class ChainFetch {
   }
 
   async getStakingValidator(address) {
-    return this.get(`/staking/validators/${address}`).then(data => new Validator().init(commonProcess(data)))
+    return this.get(`/cosmos/staking/v1beta1/validators/${address}`).then(data => new Validator().init(commonProcess(data).validator))
   }
 
   async getSlashingParameters() {
     if (this.isModuleLoaded('slashing')) {
-      return this.get('/slashing/parameters').then(data => commonProcess(data))
+      return this.get('/cosmos/slashing/v1beta1/params').then(data => commonProcess(data.params))
     }
     return null
   }
 
   async getMintParameters() {
+    if (this.config.chain_name === 'evmos') {
+      const result = await this.get('/evmos/inflation/v1/params').then(data => data.params)
+      await this.get('/evmos/inflation/v1/period').then(data => {
+        Object.entries(data).forEach(x => {
+          const k = x[0]
+          const v = x[1]
+          result[k] = v
+        })
+      })
+      await this.get('/evmos/inflation/v1/total_supply').then(data => {
+        Object.entries(data).forEach(x => {
+          const k = x[0]
+          const v = x[1]
+          result[k] = v
+        })
+      })
+      return result
+    }
+    if (this.config.chain_name === 'echelon') {
+      const result = await this.get('/echelon/inflation/v1/params').then(data => data.params)
+      await this.get('/echelon/inflation/v1/period').then(data => {
+        Object.entries(data).forEach(x => {
+          const k = x[0]
+          const v = x[1]
+          result[k] = v
+        })
+      })
+      await this.get('/echelon/inflation/v1/total_supply').then(data => {
+        Object.entries(data).forEach(x => {
+          const k = x[0]
+          const v = x[1]
+          result[k] = v
+        })
+      })
+      return result
+    }
     if (this.isModuleLoaded('minting')) {
-      return this.get('/minting/parameters').then(data => commonProcess(data))
+      return this.get('/cosmos/mint/v1beta1/params').then(data => commonProcess(data.params))
     }
     return null
   }
 
   async getDistributionParameters() {
-    return this.get('/distribution/parameters').then(data => commonProcess(data))
+    return this.get('/cosmos/distribution/v1beta1/params').then(data => commonProcess(data.params))
   }
 
   async getGovernanceParameterDeposit() {
-    return this.get('/gov/parameters/deposit').then(data => commonProcess(data))
+    return this.get('/cosmos/gov/v1beta1/params/deposit').then(data => commonProcess(data.deposit_params))
   }
 
   async getGovernanceParameterTallying() {
-    return this.get('/gov/parameters/tallying').then(data => commonProcess(data))
+    return this.get('/cosmos/gov/v1beta1/params/tallying').then(data => commonProcess(data.tally_params))
   }
 
   async getGovernanceParameterVoting() {
-    return this.get('/gov/parameters/voting').then(data => commonProcess(data))
+    return this.get('/cosmos/gov/v1beta1/params/voting').then(data => commonProcess(data.voting_params))
   }
 
-  async getGovernanceTally(pid, total) {
-    return this.get(`/gov/proposals/${pid}/tally`).then(data => new ProposalTally().init(commonProcess(data), total))
+  async getGovernanceTally(pid, total, conf) {
+    return this.get(`/cosmos/gov/v1beta1/proposals/${pid}/tally`, conf).then(data => new ProposalTally().init(commonProcess(data).tally, total))
   }
 
   getGovernance(pid) {
-    return this.get(`/gov/proposals/${pid}`).then(data => {
-      const p = new Proposal().init(commonProcess(data), 0)
+    return this.get(`/cosmos/gov/v1beta1/proposals/${pid}`).then(data => {
+      const p = new Proposal().init(commonProcess(data).proposal, 0)
       p.versionFixed(this.config.sdk_version)
       return p
     })
@@ -229,7 +290,7 @@ export default class ChainFetch {
         return Array.isArray(result) ? result.reverse().map(d => new Deposit().init(d)) : result
       })
     }
-    return this.get(`/gov/proposals/${pid}/deposits`).then(data => {
+    return this.get(`/cosmos/gov/v1beta1/proposals/${pid}/deposits`).then(data => {
       const result = commonProcess(data)
       return Array.isArray(result) ? result.reverse().map(d => new Deposit().init(d)) : result
     })
@@ -237,46 +298,92 @@ export default class ChainFetch {
 
   async getGovernanceVotes(pid, next = '', limit = 50) {
     if (compareVersions(this.config.sdk_version, '0.40') < 0) {
-      return this.get(`/gov/proposals/${pid}/votes`).then(data => ({
+      return this.get(`/cosmos/gov/v1beta1/proposals/${pid}/votes`).then(data => ({
         votes: commonProcess(data).map(d => new Votes().init(d)),
         pagination: {},
       }))
     }
-    if (this.config.chain_name === 'certik') {
-      return this.get(`/shentu/gov/v1alpha1/proposals/${pid}/votes?pagination.key=${encodeURIComponent(next)}&pagination.limit=${limit}`)
+    if (this.config.chain_name === 'shentu') {
+      return this.get(`/shentu/gov/v1alpha1/proposals/${pid}/votes?pagination.key=${encodeURIComponent(next)}&pagination.limit=${limit}&pagination.reverse=true`)
     }
-    return this.get(`/cosmos/gov/v1beta1/proposals/${pid}/votes?pagination.key=${encodeURIComponent(next)}&pagination.limit=${limit}`)
+    return this.get(`/cosmos/gov/v1beta1/proposals/${pid}/votes?pagination.key=${encodeURIComponent(next)}&pagination.limit=${limit}&pagination.reverse=true`)
   }
 
-  async getGovernanceList() {
-    const url = this.config.chain_name === 'certik' ? '/shentu/gov/v1alpha1/proposals?pagination.limit=500' : '/cosmos/gov/v1beta1/proposals?pagination.limit=500'
-    return Promise.all([this.get(url), this.get('/staking/pool')]).then(data => {
-      const pool = new StakingPool().init(commonProcess(data[1]))
-      let proposals = commonProcess(data[0])
+  async getGovernanceListByStatus(status, chain = null) {
+    const conf = chain || this.config
+    const url = conf.chain_name === 'shentu' ? `/shentu/gov/v1alpha1/proposals?pagination.limit=100&proposal_status=${status}` : `/cosmos/gov/v1beta1/proposals?pagination.limit=100&proposal_status=${status}`
+    return this.get(url, conf).then(data => {
+      let proposals = commonProcess(data)
       if (Array.isArray(proposals.proposals)) {
         proposals = proposals.proposals
       }
       const ret = []
       if (proposals) {
         proposals.forEach(e => {
-          const g = new Proposal().init(e, pool.bondedToken)
+          const g = new Proposal().init(e, 0)
           g.versionFixed(this.config.sdk_version)
           ret.push(g)
         })
       }
-      return ret
+      return {
+        proposals: ret,
+        pagination: data.pagination,
+      }
+    })
+  }
+
+  async getGovernanceProposalVote(pid, voter, chain) {
+    const url = this.config.chain_name === 'shentu'
+      ? `/shentu/gov/v1alpha1/proposals/${pid}/votes/${voter}`
+      : `/cosmos/gov/v1beta1/proposals/${pid}/votes/${voter}`
+    return this.get(url, chain).then(data => {
+      if (data.code === 3) {
+        throw new Error('not found')
+      }
+      return data
+    })
+  }
+
+  /// does NOT return value as expected
+  async getUpgradeCurrentPlan(chain = null) {
+    return this.get('/cosmos/upgrade/v1beta1/current_plan', chain)
+  }
+
+  async getGovernanceList(next = '', chain = null) {
+    const key = next || ''
+    const url = this.config.chain_name === 'shentu'
+      ? `/shentu/gov/v1alpha1/proposals?pagination.limit=50&pagination.reverse=true&pagination.key=${key}`
+      : `/cosmos/gov/v1beta1/proposals?pagination.limit=50&pagination.reverse=true&pagination.key=${key}`
+    return this.get(url, chain).then(data => {
+      // const pool = new StakingPool().init(commonProcess(data[1]))
+      let proposals = commonProcess(data)
+      if (Array.isArray(proposals.proposals)) {
+        proposals = proposals.proposals
+      }
+      const ret = []
+      if (proposals) {
+        proposals.forEach(e => {
+          const g = new Proposal().init(e, 0)
+          g.versionFixed(this.config.sdk_version)
+          ret.push(g)
+        })
+      }
+      return {
+        proposals: ret,
+        pagination: data.pagination,
+      }
     })
   }
 
   async getAuthAccount(address, config = null) {
-    return this.get('/auth/accounts/'.concat(address), config).then(data => {
+    return this.get('/cosmos/auth/v1beta1/accounts/'.concat(address), config).then(data => {
       const result = commonProcess(data)
-      return result.value ? result : { value: result }
+      return result
     })
   }
 
   async getBankAccountBalance(address) {
-    return this.get('/bank/balances/'.concat(address)).then(data => commonProcess(data))
+    return this.get('/cosmos/bank/v1beta1/balances/'.concat(address)).then(data => commonProcess(data).balances)
   }
 
   async getStakingReward(address, config = null) {
@@ -287,7 +394,7 @@ export default class ChainFetch {
   }
 
   async getStakingValidators(address) {
-    return this.get(`/cosmos/distribution/v1beta1/delegators/${address}/validators`).then(data => commonProcess(data))
+    return this.get(`/cosmos/distribution/v1beta1/delegators/${address}/validators?pagination.size=200`).then(data => commonProcess(data.validators))
   }
 
   async getStakingDelegations(address, config = null) {
@@ -321,7 +428,11 @@ export default class ChainFetch {
   }
 
   async getBankBalances(address, config = null) {
-    return this.get('/bank/balances/'.concat(address), config).then(data => commonProcess(data))
+    return this.get('/cosmos/bank/v1beta1/balances/'.concat(address), config).then(data => commonProcess(data))
+  }
+
+  async getCommunityPool(config = null) {
+    return this.get('/cosmos/distribution/v1beta1/community_pool', config).then(data => commonProcess(data))
   }
 
   async getAllIBCDenoms(config = null) {
@@ -362,7 +473,7 @@ export default class ChainFetch {
   }
 
   static async getBankBalance(baseurl, address) {
-    return ChainFetch.fetch(baseurl, '/bank/balances/'.concat(address)).then(data => commonProcess(data))
+    return ChainFetch.fetch(baseurl, '/cosmos/bank/v1beta1/balances/'.concat(address)).then(data => commonProcess(data))
   }
 
   async getGravityPools() {
@@ -374,6 +485,14 @@ export default class ChainFetch {
     const currency = getUserCurrency()
     if (conf.assets[0] && conf.assets[0].coingecko_id) {
       return ChainFetch.fetch(' https://api.coingecko.com', `/api/v3/coins/${coin || conf.assets[0].coingecko_id}/market_chart?vs_currency=${currency}&days=${days}`)
+    }
+    return null
+  }
+
+  async getCoinInfo(coin = null) {
+    const conf = this.getSelectedConfig()
+    if (conf.assets[0] && conf.assets[0].coingecko_id) {
+      return ChainFetch.fetch(' https://api.coingecko.com', `/api/v3/coins/${coin || conf.assets[0].coingecko_id}`)
     }
     return null
   }
@@ -399,7 +518,8 @@ export default class ChainFetch {
 
   // Tx Submit
   async broadcastTx(bodyBytes, config = null) {
-    const txString = toBase64(TxRaw.encode(bodyBytes).finish())
+    const txbytes = bodyBytes.authInfoBytes ? TxRaw.encode(bodyBytes).finish() : bodyBytes
+    const txString = toBase64(txbytes)
     const txRaw = {
       tx_bytes: txString,
       mode: 'BROADCAST_MODE_SYNC', // BROADCAST_MODE_SYNC, BROADCAST_MODE_BLOCK, BROADCAST_MODE_ASYNC

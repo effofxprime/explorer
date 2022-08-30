@@ -30,6 +30,7 @@
               />
             </h3>
             {{ address }}
+            <span v-if="isEthAddr"> - {{ ethaddress() }}</span>
           </div>
         </div>
       </b-card>
@@ -426,11 +427,11 @@ import VueQr from 'vue-qr'
 import chainAPI from '@/libs/fetch'
 import {
   formatToken, formatTokenAmount, formatTokenDenom, getStakingValidatorOperator, percent, tokenFormatter, toDay,
-  toDuration, abbrMessage, abbrAddress, getUserCurrency, getUserCurrencySign, numberWithCommas,
+  toDuration, abbrMessage, abbrAddress, getUserCurrency, getUserCurrencySign, numberWithCommas, toETHAddress,
 } from '@/libs/utils'
 import OperationModal from '@/views/components/OperationModal/index.vue'
-import ObjectFieldComponent from './ObjectFieldComponent.vue'
-import ChartComponentDoughnut from './ChartComponentDoughnut.vue'
+import ObjectFieldComponent from './components/ObjectFieldComponent.vue'
+import ChartComponentDoughnut from './components/charts/ChartComponentDoughnut.vue'
 
 export default {
   components: {
@@ -463,6 +464,23 @@ export default {
     'b-tooltip': VBTooltip,
     Ripple,
   },
+  beforeRouteUpdate(to, from, next) {
+    // const { address } = this.$route.params
+    const { address } = to.params
+    if (address !== from.params.hash) {
+      this.address = address
+      this.$http.getAuthAccount(this.address).then(acc => {
+        this.account = acc
+        this.initial()
+        this.$http.getTxsBySender(this.address).then(res => {
+          this.transactions = res
+        })
+      }).catch(err => {
+        this.error = err
+      })
+      next()
+    }
+  },
   data() {
     const { address } = this.$route.params
     return {
@@ -492,10 +510,10 @@ export default {
     },
     txs() {
       if (this.transactions.txs) {
-        return this.transactions.txs.map(x => ({
+        return this.transactions.tx_responses.map(x => ({
           height: Number(x.height),
           txhash: x.txhash,
-          msgs: abbrMessage(x.tx.msg ? x.tx.msg : x.tx.value.msg),
+          msgs: abbrMessage(x.tx.body.messages),
           time: toDay(x.timestamp),
         }))
       }
@@ -627,6 +645,9 @@ export default {
     denoms() {
       return this.$store.state.chains.denoms
     },
+    isEthAddr() {
+      return JSON.stringify(this.account).indexOf('PubKeyEthSecp256k1') > 0
+    },
   },
   created() {
     this.$http.getAuthAccount(this.address).then(acc => {
@@ -729,6 +750,9 @@ export default {
           },
         })
       })
+    },
+    ethaddress() {
+      return toETHAddress(this.address)
     },
   },
 }

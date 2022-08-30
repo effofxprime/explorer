@@ -1,6 +1,7 @@
 import store from '@/store'
 import { isTestnet } from '../../libs/utils'
 
+<<<<<<< HEAD
 const modules = [
   {
     scope: 'normal',
@@ -45,33 +46,20 @@ const modules = [
 //  },
 ]
 
+=======
+>>>>>>> master
 function processMenu() {
-  const chainMenus = [
-    {
-      header: 'blockchains',
-    },
-  ]
+  const chainMenus = []
+  const blockchains = []
   Object.keys(store.state.chains.config).forEach(chain => {
     const menu = {
       title: chain,
-      icon: store.state.chains.config[chain].logo,
+      logo: store.state.chains.config[chain].logo,
+      route: { name: 'dashboard', params: { chain } },
     }
-    const { excludes } = store.state.chains.config[chain]
-    const children = []
-    modules.forEach(m => {
-      if (excludes === undefined || excludes.indexOf(m.route) === -1) {
-        if (m.scope.match('normal') || m.scope.match(chain)) {
-          children.push({
-          // header: `item-${chain}-${m.route}`,
-            title: m.title,
-            route: { name: m.route, params: { chain } },
-          })
-        }
-      }
-    })
-    menu.children = children
-    chainMenus.push(menu)
+    blockchains.push(menu)
   })
+<<<<<<< HEAD
   chainMenus.push({ header: 'DONATE' })
   chainMenus.push({
     title: 'Donation Addresses',
@@ -79,6 +67,19 @@ function processMenu() {
     icon: 'DollarSignIcon',
   })
   chainMenus.push({ header: 'Explorer' })
+=======
+
+  if (blockchains.length > 1) {
+    chainMenus.push({ header: 'ecosystem' })
+    chainMenus.push({
+      title: 'blockchains',
+      children: blockchains,
+      tag: `${blockchains.length}`,
+      icon: 'https://ping.pub/logo.svg',
+    })
+  }
+  chainMenus.push({ header: 'LINKS' })
+>>>>>>> master
   if (isTestnet()) {
     chainMenus.push({
       title: 'Mainnet Explorer',
@@ -94,9 +95,20 @@ function processMenu() {
   }
   chainMenus.push({ header: 'LINKS' })
   chainMenus.push({
+<<<<<<< HEAD
     title: 'Erialos.me',
     href: 'https://erialos.me',
     icon: 'ChromeIcon',
+=======
+    title: 'Github',
+    href: 'https://github.com/ping-pub/explorer',
+    icon: 'GithubIcon',
+  })
+  chainMenus.push({
+    title: 'Discord',
+    href: 'https://discord.gg/CmjYVSr6GW',
+    icon: 'EyeIcon',
+>>>>>>> master
   })
   chainMenus.push({
     title: 'Erialos - Twitter',
@@ -104,9 +116,15 @@ function processMenu() {
     icon: 'TwitterIcon',
   })
   chainMenus.push({
+<<<<<<< HEAD
     title: 'Erialos - Github Projects',
     href: 'https://github.com/effofxprime',
     icon: 'GithubIcon',
+=======
+    title: 'Telegram',
+    href: 'https://t.me/pingpub',
+    icon: 'SendIcon',
+>>>>>>> master
   })
   chainMenus.push({ header: 'DISCORD CHATS' })
   chainMenus.push({

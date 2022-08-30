@@ -10,18 +10,12 @@
     <b-card>
       <b-card-title>
         Starting New Node From State Sync
-        <b-badge
-          v-if="snapshot_provider?false:true"
-          variant="danger"
-        >
-          WIP
-        </b-badge>
       </b-card-title>
-      <b class="mt-1">1. Install Binary</b><br>
+      <b class="mt-1">1. Install Binary (Version: {{ app_version }})</b><br>
       We need to install the binary first and make sure that the version is the one currently in use on mainnet.
       <br><br>
       <b class="mt-1">2. Enable State Sync</b><br>
-      We can configure Tendermint to use state sync in <code>$DAEMON_HOME/config/config.toml</code>, then start daemon.
+      We can configure Tendermint to use state sync in <code>$DAEMON_HOME/config/config.toml</code>.
       <ul class="mt-1">
         <li
           v-for="e in error"
@@ -41,17 +35,8 @@
         class="my-1"
         @change="check()"
       />
-      <b class="mt-1">3. (Optional) Add Snapshot Providers </b><br>
-      To reduce the time of snapshot discovering, we can add providers into persistent_peers in <code>$DAEMON_HOME/config/config.toml</code>.
-      <b-form-textarea
-        id="provider"
-        v-model="providers"
-        readonly
-        :state="snapshot_provider?true:false"
-        placeholder="Loading..."
-        rows="3"
-        class="mt-1"
-      />
+      <b class="mt-1">3. Start the daemon: <span v-if="daemon"><code>{{ daemon }} start</code></span></b><br>
+      If you are resetting node, run <code>{{ daemon }} unsafe-reset-all</code> or <code>{{ daemon }} tendermint unsafe-reset-all --home ~/.HOME</code> before you start the daemon.
     </b-card>
 
     <b-card>
@@ -59,7 +44,6 @@
         Enable Snapshot For State Sync
       </b-card-title>
       To make state sync works, we can enable snapshot in <code>$DAEMON_HOME/config/app.toml</code>
-      and don't forget to share your snapshot server <a href="https://github.com/ping-pub/explorer/discussions">Here</a>
       <b-form-textarea
         id="snapshot"
         v-model="snapshot"
@@ -73,12 +57,12 @@
 
 <script>
 import {
-  BCard, BCardTitle, BFormTextarea, BBadge,
+  BCard, BCardTitle, BFormTextarea,
 } from 'bootstrap-vue'
+import { fromBase64, toHex } from '@cosmjs/encoding'
 
 export default {
   components: {
-    BBadge,
     BCard,
     BCardTitle,
     BFormTextarea,
@@ -86,8 +70,18 @@ export default {
   data() {
     const { rpc, snapshot_provider } = this.$store.state.chains.selected
     let servers = ''
-    if (rpc && Array.isArray(rpc)) {
-      servers = rpc.join(',')
+    if (rpc && Array.isArray(rpc) && rpc.length > 0) {
+      let serv = rpc
+      if (serv.length === 1) {
+        serv = serv.concat(serv)
+      }
+      servers = serv.map(x => {
+        const url = new URL(x)
+        if (url.port === '') {
+          return `${url.protocol}//${url.hostname}:${url.protocol.startsWith('https') ? '443' : '80'}`
+        }
+        return `${url.protocol}//${url.hostname}:${url.port}`
+      }).join(',')
     }
     // eslint-disable-next-line camelcase
     const peers = snapshot_provider
@@ -95,6 +89,7 @@ export default {
       ? `# Comma separated list of nodes to keep persistent connections to \npersistent_peers = "${peers}" `
       : 'OMG！ There is NO available providers, but you can try it.'
     return {
+      app_version: '',
       snapshot_provider,
       servers,
       providers,
@@ -103,6 +98,7 @@ export default {
       error: [],
       state: '',
       valid: false,
+      daemon: '',
       snapshot: `[state-sync]
 # snapshot-interval specifies the block interval at which local state sync snapshots are
 # taken (0 to disable). Must be a multiple of pruning-keep-every.
@@ -112,34 +108,13 @@ snapshot-interval = 1000
 snapshot-keep-recent = 2`,
     }
   },
-  //   computed: {
-  //     state: {
-  //       get() {
-  //         let servers = ''
-  //         const { rpc } = this.$store.state.chains.selected
-  //         if (rpc && Array.isArray(rpc)) {
-  //           servers = rpc.join(',')
-  //         }
-  //         return `[statesync]
-  // enable = true
-  // rpc_servers = "${servers}"
-  // trust_height = ${this.height}
-  // trust_hash = "${this.hash}"
-  // trust_period = "168h"  # 2/3 of unbonding time`
-  //       },
-  //       set(text) {
-  //         console.log(text)
-  //         // this.state = text
-  //       },
-  //     },
-  //   },
   created() {
     const interval = 1000
     this.$http.getLatestBlock().then(l => {
       const { height } = l.block.header
-      if (height > interval) {
-        this.$http.getBlockByHeight(Math.trunc(height / interval) * interval).then(x => {
-          this.hash = x.block_id.hash
+      if (height > interval * 3) {
+        this.$http.getBlockByHeight(Math.trunc((height - 3 * interval) / interval) * interval).then(x => {
+          this.hash = toHex(fromBase64(x.block_id.hash))
           this.height = x.block.header.height
           this.state = `[statesync]
 enable = true
@@ -150,6 +125,10 @@ trust_period = "168h"  # 2/3 of unbonding time`
           this.check()
         })
       }
+      this.$http.getNodeInfo().then(res => {
+        this.app_version = res.application_version.version
+        this.daemon = res.application_version.app_name
+      }).catch()
     })
   },
   methods: {

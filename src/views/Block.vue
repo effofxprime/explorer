@@ -47,8 +47,8 @@ import { fromBase64 } from '@cosmjs/encoding'
 import { decodeTxRaw } from '@cosmjs/proto-signing'
 import Tx from '@/libs/data/tx'
 import { abbrMessage, tokenFormatter } from '@/libs/utils'
-import ObjectFieldComponent from './ObjectFieldComponent.vue'
-import ArrayFieldComponent from './ArrayFieldComponent.vue'
+import ObjectFieldComponent from './components/ObjectFieldComponent.vue'
+import ArrayFieldComponent from './components/ArrayFieldComponent.vue'
 
 export default {
   components: {
@@ -56,6 +56,13 @@ export default {
     BTable,
     ObjectFieldComponent,
     ArrayFieldComponent,
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { height } = to.params
+    if (height > 0 && height !== from.params.height) {
+      this.initData(height)
+      next()
+    }
   },
   data() {
     return {
@@ -67,13 +74,6 @@ export default {
         { key: 'messages', formatter: v => abbrMessage(v) },
         { key: 'memo' },
       ],
-    }
-  },
-  beforeRouteUpdate(to, from, next) {
-    const { height } = to.params
-    if (height > 0 && height !== from.params.height) {
-      this.initData(height)
-      next()
     }
   },
   created() {

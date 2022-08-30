@@ -2,7 +2,12 @@
   <div>
     <b-card
       v-if="pingVals && pingVals.length > 0"
+<<<<<<< HEAD
       title="Try to divide your delegation to at least 3 validators, but besure to make me your #1"
+=======
+      title="❤️ Helping Ping.pub By Staking ❤️"
+      class="overflow-auto"
+>>>>>>> master
     >
       <b-table
         :items="pingVals"
@@ -91,6 +96,7 @@
     </b-card>
     <b-card
       no-body
+      class="overflow-auto"
     >
       <b-card-header class="d-flex justify-content-between">
         <b-form-group class="mb-0">
@@ -197,8 +203,8 @@
           </template>
         </b-table>
       </b-card-body>
-      <template #footer>
-        <small class="d-none d-md-block">
+      <b-card-footer class="d-none d-md-block">
+        <small>
           <b-badge variant="danger">
               &nbsp;
           </b-badge>
@@ -208,7 +214,7 @@
           </b-badge>
           Top 67% of Voting Power
         </small>
-      </template>
+      </b-card-footer>
     </b-card>
     <operation-modal
       type="Delegate"
@@ -221,6 +227,7 @@
 <script>
 import {
   BTable, BMedia, BAvatar, BBadge, BCard, BCardHeader, BCardTitle, VBTooltip, BCardBody, BButton, BFormRadioGroup, BFormGroup,
+  BCardFooter,
 } from 'bootstrap-vue'
 import {
   percent, StakingParameters, formatToken,
@@ -243,6 +250,7 @@ export default {
     BButton,
     BFormRadioGroup,
     BFormGroup,
+    BCardFooter,
     OperationModal,
   },
   directives: {
@@ -311,8 +319,8 @@ export default {
       return tab.map(x => {
         const xh = x
         if (Object.keys(this.latestPower).length > 0 && Object.keys(this.previousPower).length > 0) {
-          const latest = this.latestPower[x.consensus_pubkey.value] || 0
-          const previous = this.previousPower[x.consensus_pubkey.value] || 0
+          const latest = this.latestPower[x.consensus_pubkey.key] || 0
+          const previous = this.previousPower[x.consensus_pubkey.key] || 0
           xh.changes = latest - previous
         }
         return xh

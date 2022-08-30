@@ -22,50 +22,13 @@ import { useWindowSize, useCssVar } from '@vueuse/core'
 import store from '@/store'
 
 const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
-const LayoutHorizontal = () => import('@/layouts/horizontal/LayoutHorizontal.vue')
 const LayoutFull = () => import('@/layouts/full/LayoutFull.vue')
 
 export default {
   components: {
     // Layouts
-    LayoutHorizontal,
     LayoutVertical,
     LayoutFull,
-  },
-
-  // ! We can move this computed: layout & contentLayoutType once we get to use Vue 3
-  // Currently, router.currentRoute is not reactive and doesn't trigger any change
-  computed: {
-    layout() {
-      if (!this.$route.name || this.$route.meta.layout === 'full') return 'layout-full'
-      return `layout-${this.contentLayoutType}`
-    },
-    contentLayoutType() {
-      return this.$store.state.appConfig.layout.type
-    },
-  },
-  beforeCreate() {
-    // Set colors in theme
-    const colors = ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark']
-
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0, len = colors.length; i < len; i++) {
-      $themeColors[colors[i]] = useCssVar(`--${colors[i]}`, document.documentElement).value.trim()
-    }
-
-    // Set Theme Breakpoints
-    const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl']
-
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0, len = breakpoints.length; i < len; i++) {
-      $themeBreakpoints[breakpoints[i]] = Number(
-        useCssVar(`--breakpoint-${breakpoints[i]}`, document.documentElement).value.slice(0, -2),
-      )
-    }
-
-    // Set RTL
-    const { isRTL } = $themeConfig.layout
-    document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr')
   },
   setup() {
     const { skin, skinClasses } = useAppConfig()
@@ -95,6 +58,40 @@ export default {
     return {
       skinClasses,
     }
+  },
+  // ! We can move this computed: layout & contentLayoutType once we get to use Vue 3
+  // Currently, router.currentRoute is not reactive and doesn't trigger any change
+  computed: {
+    layout() {
+      if (!this.$route.name || this.$route.meta.layout === 'full') return 'layout-full'
+      return `layout-${this.contentLayoutType}`
+    },
+    contentLayoutType() {
+      return this.$store.state.appConfig.layout.type
+    },
+  },
+  beforeCreate() {
+    // Set colors in theme
+    const colors = ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark']
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0, len = colors.length; i < len; i++) {
+      $themeColors[colors[i]] = useCssVar(`--${colors[i]}`, document.documentElement).value.trim()
+    }
+
+    // Set Theme Breakpoints
+    const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0, len = breakpoints.length; i < len; i++) {
+      $themeBreakpoints[breakpoints[i]] = Number(
+        useCssVar(`--breakpoint-${breakpoints[i]}`, document.documentElement).value.slice(0, -2),
+      )
+    }
+
+    // Set RTL
+    const { isRTL } = $themeConfig.layout
+    document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr')
   },
   created() {
     store.dispatch('chains/getQuotes')

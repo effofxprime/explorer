@@ -113,7 +113,6 @@
             sm="12"
             md="6"
             xl="4"
-            :class="(balances[acc.addr])? 'order-1' : 'order-9' "
           >
 
             <b-card
@@ -252,7 +251,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
 import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
 import OperationModal from '@/views/components/OperationModal/index.vue'
-import ChartComponentDoughnut from './ChartComponentDoughnut.vue'
+import ChartComponentDoughnut from './components/charts/ChartComponentDoughnut.vue'
 import EchartScatter from './components/charts/EchartScatter.vue'
 
 export default {
@@ -453,9 +452,10 @@ export default {
         Object.keys(this.accounts).forEach(acc => {
           this.accounts[acc].address.forEach(add => {
             this.$http.getBankBalances(add.addr, chains[add.chain]).then(res => {
-              if (res && res.length > 0) {
-                this.$set(this.balances, add.addr, res)
-                res.forEach(token => {
+              const { balances } = res
+              if (balances && balances.length > 0) {
+                this.$set(this.balances, add.addr, balances)
+                balances.forEach(token => {
                   if (token.denom.startsWith('ibc')) {
                     this.$http.getIBCDenomTrace(token.denom, chains[add.chain]).then(denom => {
                       this.$set(this.ibcDenom, token.denom, denom)
@@ -528,14 +528,14 @@ export default {
     getPrice(denom) {
       const d2 = this.formatDenom(denom)
       const quote = this.$store.state.chains.quotes[d2]
-      return quote ? quote[this.currency2] : 0
+      return quote ? quote[this.currency2] || 0 : 0
     },
     getChanges(denom) {
       const d2 = this.formatDenom(denom)
       const quote = this.$store.state.chains.quotes[d2]
       if (quote) {
         const price = quote[`${this.currency2}_24h_change`]
-        return price
+        return price || 0
       }
       return 0
     },
@@ -544,7 +544,7 @@ export default {
       if (price > 0) {
         return `+${parseFloat(price.toFixed(2))}%`
       }
-      return price === 0 ? '' : `${parseFloat(price.toFixed(2))}%`
+      return '0'
     },
     formatPrice(denom) {
       const d2 = this.formatDenom(denom)
