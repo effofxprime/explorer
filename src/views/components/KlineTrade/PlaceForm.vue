@@ -416,7 +416,7 @@ export default {
         this.address,
         txMsgs,
         txFee,
-        'Sent Via https://ping.pub',
+        'Sent Via https://explorer.erialos.me',
         signerData,
       ).then(bodyBytes => {
         this.$http.broadcastTx(bodyBytes).then(res => {

@@ -6,7 +6,7 @@
         class="ml-25 font-weight-bolder"
         href="#"
         target="_blank"
-      >Ping.pub</b-link>
+      >explorer.erialos.me</b-link>
     </span>
 
     <router-link

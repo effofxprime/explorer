@@ -19,44 +19,65 @@ function processMenu() {
       title: 'blockchains',
       children: blockchains,
       tag: `${blockchains.length}`,
-      icon: 'https://ping.pub/logo.svg',
+      icon: 'https://explorer.erialos.me/logo.svg',
     })
   }
   chainMenus.push({ header: 'LINKS' })
   if (isTestnet()) {
     chainMenus.push({
       title: 'Mainnet Explorer',
-      href: 'https://ping.pub',
+      href: 'https://explorer.erialos.me',
       icon: 'ChromeIcon',
     })
   } else {
     chainMenus.push({
       title: 'Testnet Explorer',
-      href: 'http://testnet.ping.pub',
+      href: 'http://testnet.explorer.erialos.me',
       icon: 'LifeBuoyIcon',
     })
   }
   chainMenus.push({
-    title: 'Github',
-    href: 'https://github.com/ping-pub/explorer',
-    icon: 'GithubIcon',
+    title: 'Erialos.me',
+    href: 'https://erialos.me',
+    icon: 'ChromeIcon',
   })
   chainMenus.push({
-    title: 'Discord',
-    href: 'https://discord.gg/CmjYVSr6GW',
-    icon: 'EyeIcon',
-  })
-  chainMenus.push({
-    title: 'Twitter',
-    href: 'https://twitter.com/ping_pub',
+    title: 'Erialos - Twitter',
+    href: 'https://twitter.com/ErialosOfAstora',
     icon: 'TwitterIcon',
   })
   chainMenus.push({
-    title: 'Telegram',
-    href: 'https://t.me/pingpub',
-    icon: 'SendIcon',
+    title: 'Erialos - Github Projects',
+    href: 'https://github.com/effofxprime',
+    icon: 'GithubIcon',
   })
-
+  chainMenus.push({ header: 'DISCORD CHATS' })
+  chainMenus.push({
+    title: 'PaceValiArmy',
+    href: 'https://discord.gg/X47AATjQFy',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({
+    title: 'BTC Princess',
+    href: 'https://discord.gg/VfDWX4Pw3a',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({
+    title: 'Vidulum',
+    href: 'https://discord.gg/EuYCCSFUFR',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({
+    title: 'Beezee',
+    href: 'https://discord.gg/yd4SGwRTHP',
+    icon: 'EyeIcon',
+  })
+  chainMenus.push({ header: 'POW MINING SERVERS' })
+  chainMenus.push({
+    title: 'Crypto 2Mars',
+    href: 'https://discord.com/invite/2mars',
+    icon: 'EyeIcon',
+  })
   return chainMenus
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card title="Thanks for donation">
-      Your donation is really important for us to build better open source product.
+      Your support means everything to me, DM me if you donate so I can personally thank you!
       <div class="mt-1">
         ERC20 Address:
       </div>
@@ -80,13 +80,13 @@ export default {
   },
   data() {
     return {
-      erc20: '0x88BFec573Dd3E4b7d2E6BfD4D0D6B11F843F8aa1',
-      selectedAddress: 'cosmos1ev0vtddkl7jlwfawlk06yzncapw2x9quyxx75u',
+      erc20: '0x811C4C4d4a3F3242d552b103C43Aceca7755e87b',
+      selectedAddress: 'cosmos1mv8zeqes72e7cjd8nzp5gzy5zkqr4rnhd8enn7',
     }
   },
   computed: {
     chains() {
-      const { data } = addressDecode('cosmos1ev0vtddkl7jlwfawlk06yzncapw2x9quyxx75u')
+      const { data } = addressDecode('cosmos1mv8zeqes72e7cjd8nzp5gzy5zkqr4rnhd8enn7')
       const config = Object.values(JSON.parse(localStorage.getItem('chains')))
         .map(x => ({
           chain: x.chain_name,
