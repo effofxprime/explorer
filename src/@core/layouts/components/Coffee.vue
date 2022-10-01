@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      erc20: '0x811C4C4d4a3F3242d552b103C43Aceca7755e87b',
+      erc20: '0x9668BAd6499Babc974BE9BeB81C984e453BF8e51',
       selectedAddress: 'cosmos1mv8zeqes72e7cjd8nzp5gzy5zkqr4rnhd8enn7',
     }
   },
