@@ -82,7 +82,7 @@ module.exports = {
         },
       },
     },
-  },
+  },/*
   chainWebpack: config => {
     config.performance
     .maxEntrypointSize(10240000)
@@ -92,6 +92,6 @@ module.exports = {
       chunks: 'all',
       minSize: 81390,
       maxSize: 122880,
-      });
-  },
+    });
+  },*/
 }
