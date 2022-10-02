@@ -1,12 +1,12 @@
 <template>
   <div>
     <b-card
-      v-if="pingVals && pingVals.length > 0"
+      v-if="erialosVals && erialosVals.length > 0"
       title="🦊 Help Decentralize your delegation! After choosing me, pick at least 2-4 more different validators 🦊"
       class="overflow-auto"
     >
       <b-table
-        :items="pingVals"
+        :items="erialosVals"
         :fields="validator_fields"
         :sort-desc="true"
         sort-by="tokens"
@@ -85,6 +85,58 @@
             size="sm"
             @click="selectValidator(data.item.operator_address)"
           >
+            Delegate
+          </b-button>
+        </template>
+      </b-table>
+    </b-card>
+    <b-card v-if="recVals && recVals.length > 0"
+      title="🦊 Help Decentralize your delegation! Here's a list of recommended Validators 🦊"
+      class="overflow-auto">
+      <b-table :items="recVals" :fields="validator_fields" :sort-desc="true" sort-by="tokens" striped hover
+        responsive="sm">
+        <!-- A virtual column -->
+        <template #cell(index)="data">
+          {{ data.index + 1 }}
+        </template>
+        <!-- Column: Validator -->
+        <template #cell(description)="data">
+          <b-media vertical-align="center" class="text-truncate" style="max-width:320px;">
+            <template #aside>
+              <b-avatar v-if="data.item.avatar" v-b-tooltip.hover.v-primary
+                v-b-tooltip.hover.right="data.item.description.details" size="32" variant="light-primary"
+                :src="data.item.avatar" />
+              <b-avatar v-if="!data.item.avatar" v-b-tooltip.hover.v-primary
+                v-b-tooltip.hover.right="data.item.description.details">
+                <feather-icon icon="ServerIcon" />
+              </b-avatar>
+            </template>
+            <span class="font-weight-bolder d-block text-nowrap">
+              <router-link :to="`./staking/${data.item.operator_address}`">
+                {{ data.item.description.moniker }}
+              </router-link>
+            </span>
+            <small class="text-muted">{{ data.item.description.website || data.item.description.identity }}</small>
+          </b-media>
+        </template>
+        <!-- Token -->
+        <template #cell(tokens)="data">
+          <div v-if="data.item.tokens > 0" class="d-flex flex-column">
+            <span class="font-weight-bold mb-0">{{ tokenFormatter(data.item.tokens, stakingParameters.bond_denom) }}</span>
+            <span class="font-small-2 text-muted text-nowrap d-none d-lg-block">{{ percent(data.item.tokens/stakingPool)
+              }}%</span>
+          </div>
+          <span v-else>{{ data.item.delegator_shares }}</span>
+        </template>
+        <!-- Token -->
+        <template #cell(changes)="data">
+          <small v-if="data.item.changes>0" class="text-success">+{{ data.item.changes }}</small>
+          <small v-else-if="data.item.changes===0">-</small>
+          <small v-else class="text-danger">{{ data.item.changes }}</small>
+        </template>
+        <template #cell(operation)="data">
+          <b-button v-b-modal.operation-modal :name="data.item.operator_address" variant="primary" size="sm"
+            @click="selectValidator(data.item.operator_address)">
             Delegate
           </b-button>
         </template>
@@ -340,8 +392,11 @@ export default {
     }
   },
   computed: {
-    pingVals() {
+    erialosVals() {
       return this.list.filter(x => x.description.identity === '46C9F0926FB78AF6')
+    },
+    recVals() {
+      return this.list.filter(x => x.description.identity === '168237257EE5F3AD')
     },
     list() {
       const tab = this.selectedStatus === 'active' ? this.validators : this.inactiveValidators
