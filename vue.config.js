@@ -85,8 +85,8 @@ module.exports = {
   },/*
   chainWebpack: config => {
     config.performance
-    .maxEntrypointSize(10240000)
-    .maxAssetSize(10240000)
+      .maxEntrypointSize(10240000)
+      .maxAssetSize(10240000)
     config.optimization.minimize(true);
     config.optimization.splitChunks({
       chunks: 'all',
