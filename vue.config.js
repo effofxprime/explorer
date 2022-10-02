@@ -87,6 +87,7 @@ module.exports = {
     config.performance({
       maxEntrypointSize: 10240000,
       maxAssetSize: 10240000,
+      hints: 'error',
     });
     config.optimization.minimize(true);
     config.optimization.splitChunks({
