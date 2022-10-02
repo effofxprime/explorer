@@ -1,7 +1,7 @@
 <template>
   <p class="clearfix mb-0">
     <span class="float-md-left d-none d-md-block d-md-inline-block mt-25">
-      Powered By Github Forked version of: 
+      Powered By Github Forked version of:
       <b-link
         class="ml-25 font-weight-bolder"
         href="#"

@@ -87,12 +87,12 @@ module.exports = {
     config.performance
       .maxEntrypointSize(10240000)
       .maxAssetSize(10240000)
-      .hints('error')
+      .hints('error')/*
     config.optimization.minimize(true);
     config.optimization.splitChunks({
       chunks: 'all',
       minSize: 81390,
       maxSize: 122880,
-    });
+    });*/
   },
 }
