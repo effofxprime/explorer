@@ -22,7 +22,7 @@ export default {
 <style lang="scss">
 @import '~@core/scss/base/bootstrap-extended/include';
 
-$cws-sidebar-width: 260px;
+$cws-sidebar-width: 360px;
 $gap: 2rem;
 
 .cws-container {
@@ -37,7 +37,7 @@ $gap: 2rem;
   }
 
   .cws-sidebar {
-    width: 260px;
+    width: 360px;
     position: absolute;
     right: 0;
     top: 0;
