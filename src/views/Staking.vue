@@ -2,7 +2,7 @@
   <div>
     <b-card
       v-if="pingVals && pingVals.length > 0"
-      title="❤️ Helping Ping.pub By Staking ❤️"
+      title="🦊 Help Decentralize your delegation! After choosing me, pick at least 2-4 more different validators 🦊"
       class="overflow-auto"
     >
       <b-table
@@ -341,7 +341,7 @@ export default {
   },
   computed: {
     pingVals() {
-      return this.list.filter(x => x.description.identity === '6783E9F948541962')
+      return this.list.filter(x => x.description.identity === '46C9F0926FB78AF6')
     },
     list() {
       const tab = this.selectedStatus === 'active' ? this.validators : this.inactiveValidators

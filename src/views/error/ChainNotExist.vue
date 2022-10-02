@@ -4,7 +4,7 @@
     <b-link class="brand-logo">
       <vuexy-logo />
       <h2 class="brand-text text-primary ml-1">
-        PING.PUB
+        EXPLORER.ERIALOS.ME
       </h2>
     </b-link>
 
@@ -14,7 +14,7 @@
           Sorry, The chain is not found
         </h2>
         <p class="mb-2">
-          Feel free to contact us if you want to add your chain.
+          Contact me to add it!  Twitter or Discord is best!
         </p>
 
         <b-button
