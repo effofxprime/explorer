@@ -9,7 +9,7 @@
         DISCLAIMER:
       </h4>
       <div class="alert-body">
-        <span>Ping.pub is maintained by the community, Everyone could add a chain to ping.pub. Some of those blockchains are not fully tested, Use at your own risk.</span>
+        <span>Explorer.erialos.me is a Ping.pub fork, which is maintained by the community. Anyone could submit a PR for a chain to ping.pub github repo. Some of those blockchains are not fully tested, Use at your own risk.</span>
       </div>
     </b-alert>
     <form-wizard
@@ -94,7 +94,7 @@
                     v-model="address"
                     class="mt-1"
                     name="address"
-                    placeholder="cosmos1ev0vtddkl7jlwfawlk06yzncapw2x9quyxx75u"
+                    placeholder="cosmos1mv8zeqes72e7cjd8nzp5gzy5zkqr4rnhd8enn7"
                   />
                   <small class="text-danger">{{ debug }}{{ errors[0] }}</small>
                 </validation-provider>
