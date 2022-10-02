@@ -396,7 +396,7 @@ export default {
       return this.list.filter(x => x.description.identity === '46C9F0926FB78AF6')
     },
     recVals() {
-      return this.list.filter(x => x.description.identity === '168237257EE5F3AD')
+      return [this.list.filter(x => x.description.identity === '168237257EE5F3AD'), this.list.filter(x => x.description.identity === '9795DFCC54A8F79F')]
     },
     list() {
       const tab = this.selectedStatus === 'active' ? this.validators : this.inactiveValidators
