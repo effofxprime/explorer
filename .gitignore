@@ -31,3 +31,5 @@ yarn-error.log*
 # Yarn
 /.yarn
 /node_modules
+.yarnrc.yml
+yarn.lock
