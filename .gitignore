@@ -1,7 +1,6 @@
 .DS_Store
-node_modules
-/dist
-/dist-bak
+/node_modules
+/dist*
 
 # local env files
 .env.local
@@ -31,9 +30,7 @@ yarn-error.log*
 
 # Yarn
 /.yarn
-/node_modules
-.yarnrc.yml
 yarn*
 package-lock.json
-yarn.lock
-.yarnclean
+.yarn*
+.gitignore.bak
