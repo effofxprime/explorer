@@ -1,19 +1,20 @@
 {
-    "chain_name": "chihuahua",
-    "coingecko": "",
-    "api": ["https://chihuahua-testnet-api.polkachu.com"],
-    "rpc": ["https://chihuahua-testnet-rpc.polkachu.com:443","https://chihuahua-testnet-rpc.polkachu.com:443"],
-    "snapshot_provider": "65fad3f4a7bac3ef530a31968e709da069f94985@135.181.59.162:29656",
-    "sdk_version": "0.44.3",
-    "coin_type": "118",
-    "min_tx_fee": "8000",
-    "addr_prefix": "chihuahua",
-    "logo": "/logos/chihuahua.png",
-    "assets": [{
-        "base": "uhuahua",
-        "symbol": "HUAHUA",
-        "exponent": "6",
-        "coingecko_id": "", 
-        "logo": "/logos/chihuahua.png"
-    }]
+  "chain_name": "chihuahua",
+  "coingecko": "",
+  "api": ["https://chihuahua-testnet-api.polkachu.com"],
+  "rpc": ["https://chihuahua-testnet-rpc.polkachu.com"],
+  "sdk_version": "0.44.3",
+  "coin_type": "118",
+  "min_tx_fee": "8000",
+  "addr_prefix": "chihuahua",
+  "logo": "/logos/chihuahua.png",
+  "assets": [
+    {
+      "base": "uhuahua",
+      "symbol": "HUAHUA",
+      "exponent": "6",
+      "coingecko_id": "",
+      "logo": "/logos/chihuahua.png"
+    }
+  ]
 }

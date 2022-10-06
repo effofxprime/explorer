@@ -1,8 +1,8 @@
 {
     "chain_name": "osmosis",
     "coingecko": "osmosis",
-    "api": ["https://api-osmosis-ia.cosmosia.notional.ventures", "https://osmosis-api.polkachu.com", "https://osmo.api.ping.pub", "https://lcd-osmosis.blockapsis.com"],
-    "rpc": ["https://rpc-osmosis-ia.cosmosia.notional.ventures:443", "https://osmosis-rpc.polkachu.com:443", "https://osmosis.validator.network:443", "https://rpc-osmosis.blockapsis.com:443"],
+    "api": ["https://testnet-rest.osmosis.zone", "https://lcd.osmo-test.ccvalidators.com", "https://osmosistest-lcd.quickapi.com"],
+    "rpc": ["https://testnet-rpc.osmosis.zone:443", "https://rpc.osmo-test.ccvalidators.com:443"," https://osmosistest-rpc.quickapi.com:443"],
     "snapshot_provider": "",
     "sdk_version": "0.44.5",
     "coin_type": "118",
