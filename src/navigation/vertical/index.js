@@ -27,19 +27,19 @@ function processMenu() {
     chainMenus.push({
       title: 'Mainnet Explorer',
       href: 'https://explorer.erialos.me',
-      icon: 'ChromeIcon',
+      icon: 'GlobeIcon',
     })
   } else {
     chainMenus.push({
       title: 'Testnet Explorer',
       href: 'http://testnet.explorer.erialos.me',
-      icon: 'LifeBuoyIcon',
+      icon: 'AlertCircleIcon',
     })
   }
   chainMenus.push({
     title: 'Erialos.me',
     href: 'https://erialos.me',
-    icon: 'ChromeIcon',
+    icon: 'GlobeIcon',
   })
   chainMenus.push({
     title: 'Erialos - Discord *Soon*',
