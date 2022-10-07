@@ -4,7 +4,7 @@
       Powered By Github Forked version of:
       <b-link
         class="ml-25 font-weight-bolder"
-        href="#"
+        href="https://github.com/ping-pub/explorer"
         target="_blank"
       >Ping.pub</b-link>
     </span>
@@ -19,7 +19,7 @@
         variant="outline-primary"
       >
         <feather-icon
-          icon="HeartIcon"
+          icon="CoffeeIcon"
           size="21"
           class="text-danger stroke-current"
         />

@@ -42,6 +42,11 @@ function processMenu() {
     icon: 'ChromeIcon',
   })
   chainMenus.push({
+    title: 'Erialos - Discord *Soon*',
+    href: '',
+    icon: 'MessageSquareIcon',
+  })
+  chainMenus.push({
     title: 'Erialos - Twitter',
     href: 'https://twitter.com/ErialosOfAstora',
     icon: 'TwitterIcon',
@@ -55,28 +60,12 @@ function processMenu() {
   chainMenus.push({
     title: 'PaceValiArmy',
     href: 'https://discord.gg/X47AATjQFy',
-    icon: 'EyeIcon',
+    icon: 'MessageSquareIcon',
   })
   chainMenus.push({
     title: 'BTC Princess',
     href: 'https://discord.gg/VfDWX4Pw3a',
-    icon: 'EyeIcon',
-  })
-  chainMenus.push({
-    title: 'Vidulum',
-    href: 'https://discord.gg/EuYCCSFUFR',
-    icon: 'EyeIcon',
-  })
-  chainMenus.push({
-    title: 'Beezee',
-    href: 'https://discord.gg/yd4SGwRTHP',
-    icon: 'EyeIcon',
-  })
-  chainMenus.push({ header: 'POW MINING SERVERS' })
-  chainMenus.push({
-    title: 'Crypto 2Mars',
-    href: 'https://discord.com/invite/2mars',
-    icon: 'EyeIcon',
+    icon: 'MessageSquareIcon',
   })
 
   return chainMenus
