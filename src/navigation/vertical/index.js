@@ -32,7 +32,7 @@ function processMenu() {
   } else {
     chainMenus.push({
       title: 'Testnet Explorer',
-      href: 'http://testnet.explorer.erialos.me',
+      href: 'https://testnet.explorer.erialos.me',
       icon: 'AlertCircleIcon',
     })
   }
