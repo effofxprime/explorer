@@ -37,12 +37,12 @@ function processMenu() {
     })
   }
   chainMenus.push({
-    title: 'Erialos.me',
-    href: 'https://erialos.me',
+    title: 'The Silver Fox *Coming Soon*',
+    href: '',
     icon: 'GlobeIcon',
   })
   chainMenus.push({
-    title: 'Erialos - Discord *Soon*',
+    title: 'The Silver Foxes - Discord *Soon*',
     href: '',
     icon: 'MessageSquareIcon',
   })
@@ -58,7 +58,7 @@ function processMenu() {
   })
   chainMenus.push({ header: 'DISCORD CHATS' })
   chainMenus.push({
-    title: 'PaceValiArmy',
+    title: 'Pace Vali Army',
     href: 'https://discord.gg/X47AATjQFy',
     icon: 'MessageSquareIcon',
   })

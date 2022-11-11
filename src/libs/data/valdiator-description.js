@@ -1,6 +1,6 @@
 export default class ValidatorDescription {
   constructor() {
-    this.moniker = '🦊 Erialos The Silver Fox'
+    this.moniker = '🦊 The Silver Fox'
     this.identity = 'string'
     this.website = 'https://erialos.me'
     this.security_contact = 'string'
