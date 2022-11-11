@@ -9,7 +9,7 @@ export const $themeBreakpoints = {}
 // APP CONFIG
 export const $themeConfig = {
   app: {
-    appName: 'The Silver Fox Explorer', // Will update name in navigation menu (Branding)
+    appName: 'The Silver Fox', // Will update name in navigation menu (Branding)
     // eslint-disable-next-line global-require
     appLogoImage: '/logo.svg', // Will update logo in navigation menu (Branding)
   },

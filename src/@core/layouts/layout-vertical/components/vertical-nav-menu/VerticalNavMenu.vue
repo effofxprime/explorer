@@ -55,6 +55,11 @@
           </li>
         </ul>
       </slot>
+      <div class="navbar-brand mt-0">
+        <h4 class="brand-text ml-5">
+          Explorer
+        </h4>
+      </div>
     </div>
     <!-- / main menu header-->
     <!-- main menu content-->
