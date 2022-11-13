@@ -19,20 +19,20 @@ function processMenu() {
       title: 'blockchains',
       children: blockchains,
       tag: `${blockchains.length}`,
-      icon: 'https://explorer.erialos.me/logo.svg',
+      icon: 'https://explorer.thesilverfox.pro/logo.svg',
     })
   }
   chainMenus.push({ header: 'LINKS' })
   if (isTestnet()) {
     chainMenus.push({
       title: 'Mainnet Explorer',
-      href: 'https://explorer.erialos.me',
+      href: 'https://explorer.thesilverfox.pro',
       icon: 'GlobeIcon',
     })
   } else {
     chainMenus.push({
       title: 'Testnet Explorer',
-      href: 'https://testnet.explorer.erialos.me',
+      href: 'https://testnet.explorer.thesilverfox.pro',
       icon: 'AlertCircleIcon',
     })
   }

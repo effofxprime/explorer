@@ -2,7 +2,7 @@ export default class ValidatorDescription {
   constructor() {
     this.moniker = '🦊 The Silver Fox'
     this.identity = 'string'
-    this.website = 'https://erialos.me'
+    this.website = 'https://thesilverfox.pro'
     this.security_contact = 'string'
     this.details = 'string'
   }

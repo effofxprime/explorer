@@ -9,7 +9,7 @@
         DISCLAIMER:
       </h4>
       <div class="alert-body">
-        <span>Explorer.erialos.me is a Ping.pub fork, which is maintained by the community. Anyone could submit a PR for a chain to ping.pub github repo. Some of those blockchains are not fully tested, Use at your own risk.</span>
+        <span>The Silver Fox Explorer is a Ping.pub fork, which is maintained by the community. Anyone could submit a PR for a chain to ping.pub github repo. Some of those blockchains are not fully tested, Use at your own risk.</span>
       </div>
     </b-alert>
     <form-wizard

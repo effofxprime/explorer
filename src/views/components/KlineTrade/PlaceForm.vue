@@ -416,7 +416,7 @@ export default {
         this.address,
         txMsgs,
         txFee,
-        'Sent Via https://explorer.erialos.me',
+        'Sent Via https://explorer.thesilverfox.pro',
         signerData,
       ).then(bodyBytes => {
         this.$http.broadcastTx(bodyBytes).then(res => {
