@@ -37,8 +37,8 @@ function processMenu() {
     })
   }
   chainMenus.push({
-    title: 'The Silver Fox *Coming Soon*',
-    href: '',
+    title: 'The Silver Fox',
+    href: 'https://thesilverfox.pro',
     icon: 'GlobeIcon',
   })
   chainMenus.push({
