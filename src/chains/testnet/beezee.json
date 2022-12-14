@@ -4,7 +4,7 @@
     "api": ["https://testnet.getbze.com"],
     "rpc": ["https://testnet-rpc.getbze.com:443","https://testnet-rpc.getbze.com:443"],
     "snapshot_provider": [""],
-    "sdk_version": "0.44.0",
+    "sdk_version": "0.45.9",
     "coin_type": "370",
     "min_tx_fee": "8000",
     "addr_prefix": "bze",
