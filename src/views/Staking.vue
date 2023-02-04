@@ -92,7 +92,7 @@
     </b-card>
     <b-card
       v-if="recVals && recVals.length > 0"
-      title="🦊 Help Decentralize your delegation! Here's a list of recommended Validators 🦊"
+      title="🦊 Help Decentralize your delegation! Here's a list of recommended Validators with vote power < 1% 🦊"
       class="overflow-auto"
     >
       <b-table
@@ -159,7 +159,7 @@
         <!-- Token -->
         <template #cell(changes)="data">
           <small
-            v-if="data.item.changes>0"
+            v-if="data.item.changes > 0"
             class="text-success"
           >+{{ data.item.changes }}</small>
           <small
@@ -437,8 +437,14 @@ export default {
       return this.list.filter(x => x.description.identity === '46C9F0926FB78AF6')
     },
     recVals() {
-      const recommended = ['168237257EE5F3AD', '9795DFCC54A8F79F', '0E480E2B83B23D80', 'FA260EE7A0113432', '3CE764CC78BB8A3D', 'F87ADDB700C0CC94', '1C32EF4035953E8B', '6783E9F948541962', '38172502B043D302', '6D5F63F1DDCF0404', 'E5CA7CFB7F41CBAE', '0A6AF02D1557E5B4', 'DA0FA424D0059E3D', '0AC472686AAF9E34', 'EA70527EE3B8AE8D']
-      return this.list.filter(x => recommended.includes(x.description.identity))
+      const recommended = ['168237257EE5F3AD', '9795DFCC54A8F79F', '0E480E2B83B23D80', 'FA260EE7A0113432', '3CE764CC78BB8A3D', 'F87ADDB700C0CC94', '1C32EF4035953E8B', '6783E9F948541962', '38172502B043D302', '6D5F63F1DDCF0404', 'E5CA7CFB7F41CBAE', '0A6AF02D1557E5B4', 'DA0FA424D0059E3D', '0AC472686AAF9E34', 'D75509198CE782A6', '5A8AB49CF5CAAF3C', '28DC4101DA38C22C', '86AC709C230079D0', 'CE2C5C02D96391AA', '1C5ACD2EEF363C3A', '165F85FC0194320D']
+      const recFiltered = []
+      return this.list.filter(x => {
+        if (recommended.includes(x.description.identity) && x.commission.rate >= 0.05 && x.commission.rate <= 0.1 && x.tokens / this.stakingPool < 0.01) {
+          recFiltered.push(x.description.identity)
+        }
+        return recFiltered.includes(x.description.identity)
+      })
     },
     list() {
       const tab = this.selectedStatus === 'active' ? this.validators : this.inactiveValidators
