@@ -1,9 +1,8 @@
 {
   "chain_name": "teritori",
-  "coingecko": "teritori",
-  "api": ["https://rest.mainnet.teritori.com", "https://teritori-api.polkachu.com", "https://teritori-rest.brocha.in"],
-  "rpc": ["https://rpc.mainnet.teritori.com", "https://teritori-rpc.polkachu.com:443", "https://teritori-rpc.brocha.in:443"],
-  "snapshot_provider": "94b63fddfc78230f51aeb7ac34b9fb86bd042a77@teritori-rpc.p2p.brocha.in:30552",
+  "api": ["https://rest.mainnet.teritori.com","https://api.teritori.nodestake.top"],
+  "rpc": ["https://rpc.mainnet.teritori.com","https://rpc.teritori.nodestake.top"],
+  "snapshot_provider": "",
   "sdk_version": "0.45.4",
   "coin_type": "118",
   "min_tx_fee": "5000",

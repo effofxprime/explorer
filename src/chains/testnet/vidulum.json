@@ -7,10 +7,10 @@
     "sdk_version": "0.44.0",
     "coin_type": "370",
     "min_tx_fee": "8000",
-    "addr_prefix": "tvdl",
+    "addr_prefix": "vdl",
     "logo": "/logos/VDL.png",
     "assets": [{
-        "base": "tvdl",
+        "base": "uvdl",
         "symbol": "VDL",
         "exponent": "6",
         "coingecko_id": "vidulum", 
