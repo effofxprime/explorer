@@ -1,6 +1,6 @@
 {
     "chain_name": "mars",
-    "coingecko": "mars-protocol-a7fcbcfb-fd61-4017-92f0-7ee9f9cc6da3",
+    "coingecko": "mars-protocol",
     "api": [
         "https://rest.marsprotocol.io",
         "https://mars-api.polkachu.com",
@@ -22,7 +22,7 @@
             "base": "umars",
             "symbol": "MARS",
             "exponent": "6",
-            "coingecko_id": "mars-protocol-a7fcbcfb-fd61-4017-92f0-7ee9f9cc6da3",
+            "coingecko_id": "mars-protocol",
             "logo": "/logos/mars.png"
         }
     ]
