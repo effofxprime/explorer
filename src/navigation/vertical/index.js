@@ -21,7 +21,7 @@ function processMenu() {
       tag: `${blockchains.length}`,
       icon: 'https://explorer.thesilverfox.pro/logo.svg',
     })
-  }
+  }/*
   chainMenus.push({ header: 'sponsors' })
   chainMenus.push({
     title: 'Becole',
@@ -32,7 +32,7 @@ function processMenu() {
     title: 'Osmosis',
     href: 'https://app.osmosis.zone',
     logo: 'https://ping.pub/logos/osmosis.jpg',
-  })
+  }) */
   chainMenus.push({ header: 'LINKS' })
   if (isTestnet()) {
     chainMenus.push({
