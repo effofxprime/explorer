@@ -1,20 +1,20 @@
 {
     "chain_name": "aura",
     "coingecko": "aura-network",
-    "api": ["https://lcd.euphoria.aura.network"],
+    "api": ["https://lcd.aura.network"],
     "rpc": [
-        "https://snapshot-1.euphoria.aura.network:443",
-        "https://snapshot-2.euphoria.aura.network:443"
+        "https://snapshot-1.aura.network:443",
+        "https://snapshot-2.aura.network:443"
     ],
-    "snapshot_provider": "705e3c2b2b554586976ed88bb27f68e4c4176a33@13.250.223.114:26656,b9243524f659f2ff56691a4b2919c3060b2bb824@13.214.5.1:26656",
+    "snapshot_provider": "",
     "sdk_version": "0.45.11",
     "coin_type": "118",
     "min_tx_fee": "8000",
-    "addr_prefix": "eaura",
+    "addr_prefix": "aura",
     "logo": "/logos/aura.png",
     "assets": [
         {
-            "base": "ueaura",
+            "base": "uaura",
             "symbol": "AURA",
             "exponent": "6",
             "coingecko_id": "aura-network",
