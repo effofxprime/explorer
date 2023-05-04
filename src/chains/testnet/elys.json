@@ -1,0 +1,29 @@
+{
+    "chain_name": "elys",
+    "coingecko": "elys",
+    "api": [
+		"https://api.testnet.elys.network",
+        "https://elys-testnet-api.polkachu.com",
+        "https://elys-testnet-api.itrocket.net",
+    ],
+    "rpc": [
+		"https://rpc.testnet.elys.network:443",
+        "https://elys-testnet-rpc.polkachu.com:443",
+        "https://elys-testnet-rpc.itrocket.net:443",
+
+    ],
+    "snapshot_provider": "",
+    "coin_type": "118",
+    "sdk_version": "0.46.11",
+    "addr_prefix": "elys",
+    "logo": "/logos/elys.png",
+    "assets": [
+        {
+            "base": "uelys",
+            "symbol": "ELYS",
+            "exponent": "6",
+            "coingecko_id": "elys",
+            "logo": "/logos/elys.png"
+        }
+    ]
+}
