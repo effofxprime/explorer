@@ -4,12 +4,14 @@
     "api": [
 		"https://api.testnet.elys.network",
         "https://elys-testnet-api.polkachu.com",
-        "https://elys-testnet-api.itrocket.net",
+		"https://api-t.elys.nodestake.top",
+        "https://elys-testnet-api.itrocket.net"
     ],
     "rpc": [
 		"https://rpc.testnet.elys.network:443",
         "https://elys-testnet-rpc.polkachu.com:443",
-        "https://elys-testnet-rpc.itrocket.net:443",
+		"https://rpc-t.elys.nodestake.top:443",
+        "https://elys-testnet-rpc.itrocket.net:443"
 
     ],
     "snapshot_provider": "",
