@@ -1,0 +1,24 @@
+{
+    "chain_name": "archway",
+    "coingecko": "",
+    "api": ["https://api.constantine.archway.tech","https://archway-testnet-api.polkachu.com"],
+    "rpc": [
+        "https://rpc.constantine.archway.tech:443",
+        "https://archway-testnet-rpc.polkachu.com:443"
+    ],
+    "snapshot_provider": "",
+    "sdk_version": "0.45.16",
+    "coin_type": "118",
+    "min_tx_fee": "8000",
+    "addr_prefix": "const",
+    "logo": "/logos/archway.png",
+    "assets": [
+        {
+            "base": "aconst",
+            "symbol": "ARCH",
+            "exponent": "6",
+            "coingecko_id": "",
+            "logo": "/logos/archway.png"
+        }
+    ]
+}
