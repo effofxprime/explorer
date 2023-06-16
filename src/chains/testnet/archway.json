@@ -10,7 +10,7 @@
     "sdk_version": "0.45.16",
     "coin_type": "118",
     "min_tx_fee": "8000",
-    "addr_prefix": "const",
+    "addr_prefix": "archway",
     "logo": "/logos/archway.png",
     "assets": [
         {
