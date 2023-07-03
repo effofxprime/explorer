@@ -1,0 +1,24 @@
+{
+    "chain_name": "archway",
+    "coingecko": "",
+    "api": ["https://api.mainnet.archway.io","https://archway-api.polkachu.com"],
+    "rpc": [
+        "http://rpc.mainnet.archway.io:443",
+        "https://archway-rpc.polkachu.com:443"
+    ],
+    "snapshot_provider": "",
+    "sdk_version": "0.45.16",
+    "coin_type": "118",
+    "min_tx_fee": "8000",
+    "addr_prefix": "archway",
+    "logo": "/logos/archway.png",
+    "assets": [
+        {
+            "base": "uarch",
+            "symbol": "ARCH",
+            "exponent": "18",
+            "coingecko_id": "archway",
+            "logo": "/logos/archway.png"
+        }
+    ]
+}
