@@ -1,0 +1,21 @@
+{
+    "chain_name": "temporal",
+    "coingecko": "temporal",
+    "api": ["http://142.132.157.153:24117"],
+    "rpc": ["http://142.132.157.153:24157"],
+    "snapshot_provider": "",
+    "coin_type": "118",
+    "min_tx_fee": "3000",
+    "sdk_version": "0.47.4",
+    "addr_prefix": "temporal",
+    "logo": "/logos/temporal.jpg",
+    "assets": [
+        {
+            "base": "utprl",
+            "symbol": "TPRL",
+            "exponent": "6",
+            "coingecko_id": "temporal",
+            "logo": "/logos/temporal.jpg"
+        }
+    ]
+}
