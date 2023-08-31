@@ -1,8 +1,8 @@
 {
     "chain_name": "temporal",
     "coingecko": "temporal",
-    "api": ["http://142.132.157.153:24117","https://lcd.yieldmos.com/temporal-test-1","https://testnet-temporal-api.lavenderfive.com"],
-    "rpc": ["http://142.132.157.153:24157","https://rpc.yieldmos.com/temporal-test-1","https://testnet-temporal-rpc.lavenderfive.com"],
+    "api": ["https://lcd.yieldmos.com/temporal-test-1","https://testnet-temporal-api.lavenderfive.com"],
+    "rpc": ["https://rpc.yieldmos.com/temporal-test-1","https://testnet-temporal-rpc.lavenderfive.com"],
     "snapshot_provider": "",
     "coin_type": "118",
     "min_tx_fee": "3000",
