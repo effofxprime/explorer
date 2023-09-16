@@ -7,7 +7,6 @@
     ],
     "rpc": [
         "https://rpc.yieldmos.com:443/temporal-test-2",
-        "http://142.132.157.153:24157",
         "https://testnet-temporal-rpc.lavenderfive.com:443"
     ],
     "snapshot_provider": "",
