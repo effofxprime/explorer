@@ -1,0 +1,20 @@
+{
+    "chain_name": "dydx",
+    "api": ["https://rest-dydx.ecostake.com:443","https://dydx-mainnet-lcd.autostake.com:443","https://api.dydx.nodestake.top:443","https://dydx-api.lavenderfive.com:443"],
+    "rpc": ["https://rpc-dydx.ecostake.com:443","https://dydx-mainnet-rpc.autostake.com:443","https://dydx-rpc.lavenderfive.com:443","https://rpc.dydx.nodestake.top:443"],
+    "sdk_version": "0.47.4",
+    "coin_type": "118",
+    "min_tx_fee": "800",
+    "assets": [
+        {
+            "base": "adydx",
+            "symbol": "DYDX",
+            "exponent": "18",
+            "coingecko_id": "dydx",
+            "logo": "/logos/dydx.svg"
+        }
+    ],
+    "addr_prefix": "dydx",
+    "theme_color": "#ce4747",
+    "logo": "/logos/dydx.svg"
+}
