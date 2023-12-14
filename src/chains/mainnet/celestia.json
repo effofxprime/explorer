@@ -1,0 +1,29 @@
+{
+    "chain_name": "celestia",
+    "api": [
+        "https://api-celestia.mzonder.com",
+        "https://celestia-api.lavenderfive.com:443",
+        "https://api.lunaroasis.net",
+        "https://api.celestia.nodestake.top"
+    ],
+    "rpc": [
+        "https://celestia-rpc.polkachu.com",
+        "https://rpc-celestia.mzonder.com",
+        "https://rpc.lunaroasis.net",
+        "https://rpc.celestia.nodestake.top"
+    ],
+    "sdk_version": "0.47.0",
+    "coin_type": "118",
+    "min_tx_fee": "800",
+    "addr_prefix": "celestia",
+    "logo": "/logos/celestia.png",
+    "assets": [
+        {
+            "base": "utia",
+            "symbol": "TIA",
+            "exponent": "6",
+            "coingecko_id": "celestia",
+            "logo": "/logos/celestia.png"
+        }
+    ]
+}
