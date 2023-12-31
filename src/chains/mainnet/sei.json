@@ -1,0 +1,27 @@
+{
+    "chain_name": "sei",
+    "api": [
+        "https://sei-api.polkachu.com",
+        "https://sei-api.lavenderfive.com:443",
+        "https://lcd-sei.whispernode.com:443"
+    ],
+    "rpc": [
+        "https://sei-rpc.polkachu.com",
+        "https://sei-rpc.lavenderfive.com:443",
+        "https://rpc-sei.whispernode.com:443"
+    ],
+    "sdk_version": "0.45.10",
+    "coin_type": "118",
+    "min_tx_fee": "800",
+    "addr_prefix": "sei",
+    "logo": "/logos/sei.jpg",
+    "assets": [
+        {
+            "base": "usei",
+            "symbol": "SEI",
+            "exponent": "6",
+            "coingecko_id": "sei-network",
+            "logo": "/logos/sei.jpg"
+        }
+    ]
+}
