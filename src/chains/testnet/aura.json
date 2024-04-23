@@ -1,5 +1,5 @@
 {
-    "chain_name": "aura",
+    "chain_name": "aura_6321-3-testnet",
     "coingecko": "",
     "api": ["https://lcd.euphoria.aura.network"],
     "rpc": [
