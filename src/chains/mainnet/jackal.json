@@ -13,7 +13,7 @@
     ],
     "snapshot_provider": "",
     "coin_type": "118",
-    "sdk_version": "0.45.11",
+    "sdk_version": "0.45.17",
     "addr_prefix": "jkl",
     "logo": "/logos/jackal.png",
     "assets": [

@@ -3,7 +3,7 @@
   "api": ["https://rest.mainnet.teritori.com","https://api.teritori.nodestake.top"],
   "rpc": ["https://rpc.mainnet.teritori.com","https://rpc.teritori.nodestake.top"],
   "snapshot_provider": "",
-  "sdk_version": "0.45.4",
+  "sdk_version": "0.47.6",
   "coin_type": "118",
   "min_tx_fee": "5000",
   "addr_prefix": "tori",
