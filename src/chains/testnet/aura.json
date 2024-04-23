@@ -14,7 +14,7 @@
     "logo": "/logos/aura.png",
     "assets": [
         {
-            "base": "uaura",
+            "base": "ueaura",
             "symbol": "AURA",
             "exponent": "6",
             "coingecko_id": "",
