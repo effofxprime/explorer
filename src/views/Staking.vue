@@ -489,8 +489,6 @@ export default {
             && (x?.commission?.rate <= 0.05 || x?.commission?.rate >= 0.01)
             && x.tokens / this.stakingPool < 0.01
           ) {
-            console.log(x.description.identity, x.commission.rate)
-            console.log(this.list)
             recFiltered.push(x.description.identity)
           }
           return recFiltered.includes(x?.description?.identity)
