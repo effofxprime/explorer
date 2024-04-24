@@ -434,7 +434,13 @@ export default {
   },
   computed: {
     erialosVals() {
-      return this.list.filter(x => x.description.identity === '46C9F0926FB78AF6')
+      if (!this.list) return [] // Check for null pointer reference
+
+      return this.list.filter(x => {
+        if (!x || !x.description) return false // Check for null pointer reference
+
+        return x.description.identity === '46C9F0926FB78AF6'
+      })
     },
     // Consensus One 38172502B043D302
     // Block Pane D75509198CE782A6
@@ -454,15 +460,42 @@ export default {
     // Silk Nodes 1326A75B9148A214
     // Stakecito D16E26E5C8154E17
     // Tedcrypto 6D5F63F1DDCF0404
+
     recVals() {
-      const recommended = ['38172502B043D302', 'D75509198CE782A6', '9795DFCC54A8F79F', 'B74BDDE339591690', '1C32EF4035953E8B', 'FA260EE7A0113432', 'E294DFEB5B016EE2', 'F87ADDB700C0CC94', '5A8AB49CF5CAAF3C', 'DA0FA424D0059E3D', '168237257EE5F3AD', '86AC709C230079D0', '6783E9F948541962', '0A6AF02D1557E5B4', '1326A75B9148A214', 'D16E26E5C8154E17', '6D5F63F1DDCF0404']
+      const recommended = [
+        '38172502B043D302',
+        'D75509198CE782A6',
+        '9795DFCC54A8F79F',
+        'B74BDDE339591690',
+        '1C32EF4035953E8B',
+        'FA260EE7A0113432',
+        'E294DFEB5B016EE2',
+        'F87ADDB700C0CC94',
+        '5A8AB49CF5CAAF3C',
+        'DA0FA424D0059E3D',
+        '168237257EE5F3AD',
+        '86AC709C230079D0',
+        '6783E9F948541962',
+        '0A6AF02D1557E5B4',
+        '1326A75B9148A214',
+        'D16E26E5C8154E17',
+        '6D5F63F1DDCF0404',
+      ]
       const recFiltered = []
-      return this.list.filter(x => {
-        if (recommended.includes(x.description.identity) && x.commission.rate >= 0.05 && x.commission.rate < 0.01 && x.tokens / this.stakingPool < 0.01) {
-          recFiltered.push(x.description.identity)
-        }
-        return recFiltered.includes(x.description.identity)
-      })
+      return this.list
+        .filter(x => {
+          if (
+            recommended.includes(x?.description?.identity)
+            && (x?.commission?.rate <= 0.05 || x?.commission?.rate >= 0.01)
+            && x.tokens / this.stakingPool < 0.01
+          ) {
+            console.log(x.description.identity, x.commission.rate)
+            console.log(this.list)
+            recFiltered.push(x.description.identity)
+          }
+          return recFiltered.includes(x?.description?.identity)
+        })
+        .filter(x => x !== undefined) // Check for null pointer reference
     },
     list() {
       const tab = this.selectedStatus === 'active' ? this.validators : this.inactiveValidators
