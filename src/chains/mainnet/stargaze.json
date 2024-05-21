@@ -5,7 +5,6 @@
     "snapshot_provider": "",
     "sdk_version": "0.47.10",
     "coin_type": "118",
-    "min_tx_fee": "800",
     "addr_prefix": "stars",
     "logo": "/logos/stargaze.png",
     "assets": [{
