@@ -1,18 +1,25 @@
 {
     "chain_name": "stargaze",
-    "api": ["https://rest.castor-1.stargaze-apis.com"],
-    "rpc": ["https://rpc.castor-1.stargaze-apis.com:443", "https://rpc.castor-1.stargaze-apis.com:443"],
+    "api": [
+        "https://rest.elgafar-1.stargaze-apis.com",
+        "https://stargaze-testnet-api.polkachu.com"
+    ],
+    "rpc": [
+        "https://rpc.elgafar-1.stargaze-apis.com",
+        "https://stargaze-testnet-rpc.polkachu.com"
+    ],
     "snapshot_provider": "",
-    "sdk_version": "0.44.3",
+    "sdk_version": "0.47.10",
     "coin_type": "118",
-    "min_tx_fee": "800",
     "addr_prefix": "stars",
     "logo": "/logos/stargaze.png",
-    "assets": [{
-        "base": "ustars",
-        "symbol": "STARS",
-        "exponent": "6",
-        "coingecko_id": "stargaze", 
-        "logo": "/logos/stargaze.png"
-    }]
+    "assets": [
+        {
+            "base": "ustars",
+            "symbol": "STARS",
+            "exponent": "6",
+            "coingecko_id": "stargaze",
+            "logo": "/logos/stargaze.png"
+        }
+    ]
 }
