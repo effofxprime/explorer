@@ -16,7 +16,7 @@
     ],
     "snapshot_provider": "",
     "coin_type": "118",
-    "sdk_version": "0.47.10",
+    "sdk_version": "0.50.9",
     "addr_prefix": "elys",
     "logo": "/logos/elys.png",
     "assets": [

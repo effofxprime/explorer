@@ -1,0 +1,37 @@
+{
+    "chain_name": "elys",
+    "coingecko": "elys",
+    "api": [
+		"https://api.elys.network",
+        "https://elys-api.polkachu.com",
+		"https://api.elys.nodestake.top",
+        "https://elys-api.itrocket.net",
+		"https://elys_mainnet_api.chain.whenmoonwhenlambo.money",
+		"https://api.elys.domanodes.com",
+		"https://elys-1-api.stake-town.com"
+    ],
+    "rpc": [
+		"https://rpc.elys.network:443",
+        "https://elys-rpc.polkachu.com:443",
+		"https://rpc.elys.nodestake.top:443",
+        "https://elys-rpc.itrocket.net:443",
+		"https://elys_mainnet_rpc.chain.whenmoonwhenlambo.money:443",
+		"https://rpc.elys.domanodes.com:443",
+		"https://elys-1-rpc.stake-town.com:443"
+
+    ],
+    "snapshot_provider": "",
+    "coin_type": "118",
+    "sdk_version": "0.50.9",
+    "addr_prefix": "elys",
+    "logo": "/logos/elys.png",
+    "assets": [
+        {
+            "base": "uelys",
+            "symbol": "ELYS",
+            "exponent": "6",
+            "coingecko_id": "elys",
+            "logo": "/logos/elys.png"
+        }
+    ]
+}
